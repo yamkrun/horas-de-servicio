@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { ServiceTable } from "../components/ServiceTable"
 
 export default function StudentPortal() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -35,9 +34,9 @@ export default function StudentPortal() {
             {/* Logo y título */}
             <div className="flex items-center space-x-3">
               <div className="bg-white text-blue-800 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">
-                EP
+                <img src="" alt="" />
               </div>
-              <h1 className="text-xl font-bold">Portal de horas de Servicio</h1>
+              <h1 className="text-xl font-bold">Portal Estudiante</h1>
             </div>
 
             {/* Dropdown del usuario */}
@@ -77,12 +76,10 @@ export default function StudentPortal() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Bienvenido, {studentName}</h2>
         <p className="text-gray-600">
-         Horas de Servicio
+          Este es tu portal de estudiante. Usa el menú en la esquina superior derecha para acceder a tu perfil.
         </p>
-        <ServiceTable/>
       </main>
     </div>
   )
 }
-
 
