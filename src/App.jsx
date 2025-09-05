@@ -7,9 +7,10 @@ export default function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Login />}></Route>
-        <Route path="/Admin" element={<Admin />}></Route>
-        <Route path="/Student" element={<Student />}></Route>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/Admin" element={<Admin />} />
+        <Route path="/Student" element={<Student />} />
       </Routes>
     </div>
   );

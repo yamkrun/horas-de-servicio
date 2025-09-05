@@ -1,50 +1,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../libs/axios";
+import { logIn } from "../libs/axios/auth";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
-
+    setError("");
+    const formData = new FormData(e.target);
+    const body = Object.fromEntries(formData.entries());
     try {
-      const res = await fetch(
-        "https://www.hs-service.api.crealape.com/api/v1/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-          credentials: "include",
-        }
-      );
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Error en el login");
+      
+      const response = await logIn(body);
+      
+      if (response.error) {
+        throw new Error(response.error);
       }
-
-      const profileRes = await fetch(
-        "https://www.hs-service.api.crealape.com/api/v1/auth/profile",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-
-      const profile = await profileRes.json();
-
-      if (!profileRes.ok)
-        throw new Error(profile.message || "No se pudo obtener el perfil");
-
-      console.log("Perfil:", profile);
-
+      
+      const profileRes = await api.get("/auth/profile");
+      const profile = profileRes.data;
+      if (!profile || !profile.role || !profile.role.name) {
+        throw new Error("No se pudo obtener el perfil");
+      }
       if (profile.role.name === "Admin") {
         navigate("/Admin");
       } else if (profile.role.name === "Student") {
@@ -52,9 +34,8 @@ export default function Login() {
       } else {
         setError("Rol no reconocido");
       }
-    } catch (err) {
-      console.error("Error:", err);
-      setError(err.message);
+    } catch (error) {
+      setError(error.message || "Error en el login");
     } finally {
       setLoading(false);
     }
@@ -87,8 +68,7 @@ export default function Login() {
               <input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+               name="email"
                 required
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -107,8 +87,7 @@ export default function Login() {
               <input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+               name="password"
                 required
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
