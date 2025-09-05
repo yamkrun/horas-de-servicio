@@ -1,4 +1,5 @@
 import { api } from ".";
+
  export const logIn = async(body) =>{
     try {
         const { data, status } = await api.post('/auth/login', body);
@@ -9,7 +10,7 @@ import { api } from ".";
 }
  export const logOut = async(body) =>{
     try{
-        const {data,status} = api.get('/auth/logout', body)
+        const {data,status} = await api.get('/auth/logout', body)
         return{status,data}
     }
     catch(error){
@@ -17,3 +18,4 @@ import { api } from ".";
 
     }
 }
+

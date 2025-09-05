@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import Student from "./pages/Student";
+import Register from "./pages/Register";
 import Layout from "./layout/Layout";
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
         <Route element={<Layout />}>
         <Route path="/Admin" element={<Admin />} />
         <Route path="/Student" element={<Student />} />
+          <Route path="/register" element={<Register />} />{" "}
          </Route>
       </Routes>
     </div>

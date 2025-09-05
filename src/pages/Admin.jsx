@@ -1,15 +1,20 @@
 import { FiSearch } from "react-icons/fi";
 import { FiChevronDown } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import TableUsers from "../components/TableUsers";
 import { api } from "../libs/axios";
 import { useEffect, useState } from "react";
 import StudentsTable from "../components/StudentsTable";
 
 export default function Admin() {
+   const navigate = useNavigate();
   const [recruiter, setRecruiter] = useState([]);
   const [controllers, setControllers] = useState([]);
   const [admin, setAdmin] = useState([]);
   const [students, setStudents] = useState([]);
+  const handleAddStudent = () => {
+    navigate("/register");
+  };
   useEffect(() => {
     api
       .get("/users?r=1")
@@ -72,11 +77,14 @@ export default function Admin() {
             <h2 className="text-2xl font-bold my-10 flex items-center gap-2">
               <FiChevronDown /> Students List
             </h2>
-            <button className="px-6 py-2 bg-blue-800 w-50 text-white rounded-lg hover:bg-blue-600 cursor-pointer focus:bg-blue-600 transition">
+            <button
+              onClick={handleAddStudent}
+              className="px-6 py-2 bg-blue-800 w-50 text-white rounded-lg hover:bg-blue-600 cursor-pointer focus:bg-blue-600 transition"
+            >
               Add Student
             </button>
           </div>
-          <StudentsTable data={students}></StudentsTable>
+           <StudentsTable data={students}></StudentsTable>
         </div>
       </main>
     </>

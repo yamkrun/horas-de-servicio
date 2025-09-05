@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useEffect } from "react";
 import { ServiceTable } from "../components/ServiceTable";
@@ -52,7 +53,6 @@ export default function StudentPortal() {
 
 
 
- 
 
   return (
     <div className="min-h-screen bg-[#f2f3f7]">
