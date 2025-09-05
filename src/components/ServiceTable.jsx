@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { api } from "../libs/axios";
 
@@ -11,7 +12,6 @@ git
       .then((response) => setData(response.data))
       .catch((error) => setError(error.message || "Error al cargar servicios"));
   }, []);
-
   return (
     <div className="p-6 ">
       <div className="overflow-x-auto ">
@@ -42,6 +42,7 @@ git
             </tr>
           </thead>
           <tbody>
+
             {response.map((servicio) => (
               <tr key={servicio.id} className="hover:bg-gray-200">
                 <td className="border border-gray-300 px-4 py-3 text-black">
@@ -69,7 +70,7 @@ git
                     {servicio.status}
                   </span>
                 </td>
-                <td className="border border-gray-300 px-4  py-3 text-black">
+                <td className="border border-gray-300 px-4 flex justify-center py-3 text-black">
                   <button className="bg-gray-200 hover:bg-gray-300 text-black flex px-3 py-1 rounded border border-gray-400 text-sm">
                     Ver PDF
                   </button>

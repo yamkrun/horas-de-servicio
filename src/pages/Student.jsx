@@ -1,88 +1,40 @@
-import { useState } from "react"
-import { ServiceTable } from "../components/ServiceTable"
+import { useState } from "react";
+import { ServiceTable } from "../components/ServiceTable";
 
 export default function StudentPortal() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  
-  const studentName = "Juan Pérez"
+  const studentName = "Juan Pérez
   const initials = studentName
     .split(" ")
     .map((name) => name[0])
     .join("")
-    .toUpperCase()
+    .toUpperCase();
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleEditProfile = () => {
-    alert("Redirigiendo a editar perfil...")
-    setIsDropdownOpen(false)
-  }
+    alert("Redirigiendo a editar perfil...");
+    setIsDropdownOpen(false);
+  };
 
   const handleLogout = () => {
-    alert("Cerrando sesión...")
-    setIsDropdownOpen(false)
-  }
+    alert("Cerrando sesión...");
+    setIsDropdownOpen(false);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-blue-800 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo y título */}
-            <div className="flex items-center space-x-3">
-              <div className="bg-white text-blue-800 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">
-                EP
-              </div>
-              <h1 className="text-xl font-bold">Portal de horas de Servicio</h1>
-            </div>
-
-            {/* Dropdown del usuario */}
-            <div className="relative">
-              <button
-                onClick={toggleDropdown}
-                className="bg-blue-700 hover:bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-200"
-              >
-                {initials}
-              </button>
-
-              {/* Menú dropdown */}
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
-                  <div className="py-1">
-                    <button
-                      onClick={handleEditProfile}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
-                    >
-                      Editar Perfil
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
-                    >
-                      Cerrar Sesión
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#f2f3f7]">
       {/* Contenido principal */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Bienvenido, {studentName}</h2>
-        <p className="text-gray-600">
-         Horas de Servicio
-        </p>
-        <ServiceTable/>
+      <h2 className="text-2xl font-bold text-gray-900 m-6">
+        Bienvenido, {studentName}
+      </h2>
+      <main className="max-w-7xl bg-[#ffffff] mx-auto lg:rounded-md px-4 sm:px-6 lg:px-8 py-8">
+        <p className="text-gray-600">Horas de Servicio</p>
+        <ServiceTable />
       </main>
     </div>
-  )
+  );
 }
-
-
