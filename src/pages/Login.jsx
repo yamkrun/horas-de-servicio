@@ -12,49 +12,43 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
+    const formData = new FormData(e.target);
+    const body = Object.fromEntries(formData.entries());
 
     try {
-      const res = await fetch(
-        "https://www.hs-service.api.crealape.com/api/v1/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-          credentials: "include",
-        }
-      );
+      const response = await logIn(body);
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Error en el login");
+      if (response.error) {
+        if (response.error.includes("invalid email or password")) {
+          throw new Error("Email o contraseña incorrectos");
+        } else {
+          throw new Error(response.error);
+        }
       }
 
-      const profileRes = await fetch(
-        "https://www.hs-service.api.crealape.com/api/v1/auth/profile",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const profileRes = await api.get("/auth/profile");
 
-      const profile = await profileRes.json();
+      const profile = profileRes.data;
+      if (!profile || !profile.role || !profile.role.name) {
+        throw new Error("No se pudo obtener el perfil correctamente.");
+      }
 
-      if (!profileRes.ok)
-        throw new Error(profile.message || "No se pudo obtener el perfil");
-
-      console.log("Perfil:", profile);
-
-      if (profile.role.name === "Admin") {
-        navigate("/Admin");
-      } else if (profile.role.name === "Student") {
-        navigate("/Student");
+      switch (profile.role.name) {
+        case "Admin":
+          navigate("/Admin");
+          break;
+        case "Student":
+          navigate("/Student");
+          break;
+        default:
+          throw new Error("Rol no reconocido.");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setError("Email o contraseña incorrectos");
       } else {
-        setError("Rol no reconocido");
+        setError(error.message || "Error en el login");
       }
-    } catch (err) {
-      console.error("Error:", err);
-      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -87,8 +81,7 @@ export default function Login() {
               <input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -107,8 +100,7 @@ export default function Login() {
               <input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
                 required
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -116,7 +108,7 @@ export default function Login() {
           </div>
 
           {/* Error */}
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           {/* Botón */}
           <div>
