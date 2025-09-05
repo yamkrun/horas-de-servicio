@@ -2,20 +2,14 @@ import { useEffect, useState } from "react";
 import HeaderAdmin from "../components/HeaderAdmin";
 import { FiSearch } from "react-icons/fi";
 import { FiChevronDown } from "react-icons/fi";
-import useData from "../Hooks/useData";
+import useData from "../hooks/useData";
 import TableUsers from "../components/TableUsers";
 
 export default function Admin() {
   const [menuOpen, setMenuOpen] = useState(false);
-  {
-    /*const { data, loading, error } = useData();*/
-  }
-
-  {
-    /* if (loading) return <p className="p-6">Cargando usuarios...</p>;
-  if (error)
-    return <p className="p-6 text-red-500">Error al cargar: {error.message}</p>;*/
-  }
+  const { data, loading, error } = useData();
+  if (loading) return <p className="p-6">Cargando usuarios...</p>;
+  if (error) return <p className="p-6 text-red-500">Error al cargar: {error.message}</p>;
 
   return (
     <>
@@ -79,7 +73,7 @@ export default function Admin() {
         </div>
       </footer>
 
-      {/*<TableUsers data={data} />*/}
+  <TableUsers data={data} />
     </>
   );
 }
