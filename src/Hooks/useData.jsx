@@ -11,7 +11,7 @@ export default function useData() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(url)
+      .get(url, { withCredentials: true })
       .then((res) => {
         setData(res.data);
         setError(null);

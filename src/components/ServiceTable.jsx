@@ -1,5 +1,4 @@
-export  function ServiceTable() {
-
+export function ServiceTable() {
   const registros = [
     {
       id: 1,
@@ -22,7 +21,7 @@ export  function ServiceTable() {
       fecha: "2024-01-17",
       status: "Pendiente",
     },
-  ]
+  ];
 
   return (
     <div className="p-6 ">
@@ -30,36 +29,58 @@ export  function ServiceTable() {
         <table className="w-full border-collapse border border-gray-300 text-center">
           <thead>
             <tr className="bg-gray-400">
-              <th className="border border-gray-300 px-2 py-3  text-black font-medium">ID</th>
-              <th className="border border-gray-300 px-4 py-3  text-black font-medium">Categoría</th>
-              <th className="border border-gray-300 px-4 py-3  text-black font-medium">Horas</th>
-              <th className="border border-gray-300 px-4 py-3  text-black font-medium">Fecha</th>
-              <th className="border border-gray-300 px-4 py-3  text-black font-medium">Status</th>
-              <th className="border border-gray-300 px-4 py-3  text-black font-medium">Ver Evidencia</th>
-              <th className="border border-gray-300 px-4 py-3  text-black font-medium">Modificar</th>
+              <th className="border border-gray-300 px-2 py-3  text-black font-medium">
+                ID
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Categoría
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Horas
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Fecha
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Status
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Ver Evidencia
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Modificar
+              </th>
             </tr>
           </thead>
           <tbody>
             {registros.map((registro) => (
               <tr key={registro.id} className="hover:bg-gray-200">
-                <td className="border border-gray-300 px-4 py-3 text-black">{registro.id}</td>
-                <td className="border border-gray-300 px-4 py-3 text-black">{registro.categoria}</td>
-                <td className="border border-gray-300 px-4 py-3 text-black">{registro.horas}</td>
-                <td className="border border-gray-300 px-4 py-3 text-black">{registro.fecha}</td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {registro.id}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {registro.categoria}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {registro.horas}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {registro.fecha}
+                </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   <span
                     className={`px-2 py-1 rounded text-sm ${
                       registro.status === "Completado"
                         ? "bg-blue-300 text-black"
                         : registro.status === "En progreso"
-                          ? "bg-green-300 text-black"
-                          : "bg-red-400 text-black"
+                        ? "bg-green-300 text-black"
+                        : "bg-red-400 text-black"
                     }`}
                   >
                     {registro.status}
                   </span>
                 </td>
-                <td className="border border-gray-300 px-4  py-3 text-black">
+                <td className="border border-gray-300 px-4 flex justify-center py-3 text-black">
                   <button className="bg-gray-200 hover:bg-gray-300 text-black flex px-3 py-1 rounded border border-gray-400 text-sm">
                     Ver PDF
                   </button>
@@ -88,5 +109,5 @@ export  function ServiceTable() {
         </table>
       </div>
     </div>
-  )
+  );
 }
