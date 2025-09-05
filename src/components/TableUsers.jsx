@@ -1,7 +1,9 @@
-
 import React from "react";
 
-export default function TableUsers({ data }) {
+export default function TableUsers({ data, filterRole }) {
+  const filteredData = filterRole
+    ? data.filter((user) => user.role.name === filterRole)
+    : data;
   return (
     <div className="overflow-x-auto p-6">
       <table className=" w-full border-collapse border border-gray-300 text-center">
@@ -28,16 +30,20 @@ export default function TableUsers({ data }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((user, index) => (
+          {filteredData.map((user, index) => (
             <tr key={index} className="hover:bg-gray-200">
               <td className="px-4 py-2 border border-gray-300">{user.id}</td>
               <td className="px-4 py-2 border border-gray-300">
-                {user.f_name} {user.m_name} {user.f_lastname} {user.m_lastname}
+                {user.full_name}
               </td>
               <td className="px-4 py-2 border border-gray-300">{user.email}</td>
               <td className="px-4 py-2 border border-gray-300">{user.phone}</td>
-              <td className="px-4 py-2 border border-gray-300">{user.role.name}</td>
-              <td className="px-4 py-2 border border-gray-300">{user.status}</td>
+              <td className="px-4 py-2 border border-gray-300">
+                {user.role.name}
+              </td>
+              <td className="px-4 py-2 border border-gray-300">
+                {user.status}
+              </td>
             </tr>
           ))}
         </tbody>

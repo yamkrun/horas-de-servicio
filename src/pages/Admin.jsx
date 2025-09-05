@@ -1,15 +1,42 @@
 import { FiSearch } from "react-icons/fi";
 import { FiChevronDown } from "react-icons/fi";
-import useData from "../hooks/useData";
 import TableUsers from "../components/TableUsers";
+import { api } from "../libs/axios";
+import { useEffect, useState } from "react";
+import StudentsTable from "../components/StudentsTable";
 
 export default function Admin() {
-  const { data, loading, error } = useData();
+  const [recruiter, setRecruiter] = useState([]);
+  const [controllers, setControllers] = useState([]);
+  const [admin, setAdmin] = useState([]);
+  const [students, setStudents] = useState([]);
+  useEffect(() => {
+    api
+      .get("/users?r=1")
+      .then((res) => setAdmin(res.data))
+      .catch((err) => console.error("Error cargando admins:", err));
+  });
 
-  if (loading) return <p className="p-6">Cargando usuarios...</p>;
-  if (error)
-    return <p className="p-6 text-red-500">Error al cargar: {error.message}</p>
+  useEffect(() => {
+    api
+      .get("/students")
+      .then((res) => setStudents(res.data))
+      .catch((err) => console.error("Error cargando admins:", err));
+  });
 
+  useEffect(() => {
+    api
+      .get("/users?r=3")
+      .then((res) => setRecruiter(res.data))
+      .catch((err) => console.error("Error cargando admins:", err));
+  });
+
+  useEffect(() => {
+    api
+      .get("/users?r=2")
+      .then((res) => setControllers(res.data))
+      .catch((err) => console.error("Error cargando admins:", err));
+  });
   return (
     <>
       <main className="bg-[#f2f3f7]">
@@ -30,17 +57,17 @@ export default function Admin() {
             <FiChevronDown />
             Admin
           </h2>
-          <TableUsers data={data} />
+          <TableUsers data={admin} filterRole={"Admin"} />
           <h2 className="text-2xl font-bold p-10 flex items-center gap-2">
             <FiChevronDown />
             Controllers List
           </h2>
-          <TableUsers data={data} />
+          <TableUsers data={controllers} />
           <h2 className="text-2xl font-bold p-10 flex items-center gap-2">
             <FiChevronDown />
             Recruiter
           </h2>
-          <TableUsers data={data} />
+          <TableUsers data={recruiter} />
           <div className="flex flex-col md:flex-row md:items-center  md:justify-between px-10">
             <h2 className="text-2xl font-bold my-10 flex items-center gap-2">
               <FiChevronDown /> Students List
@@ -49,7 +76,7 @@ export default function Admin() {
               Add Student
             </button>
           </div>
-          <TableUsers data={data} />
+          <StudentsTable data={students}></StudentsTable>
         </div>
       </main>
     </>
