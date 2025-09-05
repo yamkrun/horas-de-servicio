@@ -4,8 +4,7 @@ import { ServiceTable } from "../components/ServiceTable";
 export default function StudentPortal() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Datos del estudiante (esto normalmente vendría de una API o contexto)
-  const studentName = "Juan Pérez";
+  const studentName = "Juan Pérez
   const initials = studentName
     .split(" ")
     .map((name) => name[0])

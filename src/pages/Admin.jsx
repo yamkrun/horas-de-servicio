@@ -1,6 +1,6 @@
 import { FiSearch } from "react-icons/fi";
 import { FiChevronDown } from "react-icons/fi";
-import useData from "../Hooks/useData";
+import useData from "../hooks/useData";
 import TableUsers from "../components/TableUsers";
 
 export default function Admin() {
@@ -8,7 +8,7 @@ export default function Admin() {
 
   if (loading) return <p className="p-6">Cargando usuarios...</p>;
   if (error)
-    return <p className="p-6 text-red-500">Error al cargar: {error.message}</p>;
+    return <p className="p-6 text-red-500">Error al cargar: {error.message}</p>
 
   return (
     <>

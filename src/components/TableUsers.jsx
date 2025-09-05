@@ -1,9 +1,10 @@
+
 import React from "react";
 
 export default function TableUsers({ data }) {
   return (
-    <div class="overflow-x-auto p-6">
-      <table class=" w-full border-collapse border border-gray-300 text-center">
+    <div className="overflow-x-auto p-6">
+      <table className=" w-full border-collapse border border-gray-300 text-center">
         <thead>
           <tr className="bg-gray-400">
             <th className="border border-gray-300 px-2 py-3  text-black font-medium">
@@ -27,21 +28,18 @@ export default function TableUsers({ data }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((user, index) => {
-            <tr key={index} class="hover:bg-gray-200">
-              <td class="px-4 py-2 border border-gray-300">
-                {user.f_name}+{user.m_name}
+          {data.map((user, index) => (
+            <tr key={index} className="hover:bg-gray-200">
+              <td className="px-4 py-2 border border-gray-300">{user.id}</td>
+              <td className="px-4 py-2 border border-gray-300">
+                {user.f_name} {user.m_name} {user.f_lastname} {user.m_lastname}
               </td>
-              <td class="px-4 py-2 border border-gray-300">
-                {user.f_lastname}
-                {user.m_lastname}
-              </td>
-              <td class="px-4 py-2 border border-gray-300">{user.email}</td>
-              <td class="px-4 py-2 border border-gray-300">{user.phone}</td>
-              <td class="px-4 py-2 border border-gray-300">{user.role.name}</td>
-              <td class="px-4 py-2 border border-gray-300">{user.status}</td>
-            </tr>;
-          })}
+              <td className="px-4 py-2 border border-gray-300">{user.email}</td>
+              <td className="px-4 py-2 border border-gray-300">{user.phone}</td>
+              <td className="px-4 py-2 border border-gray-300">{user.role.name}</td>
+              <td className="px-4 py-2 border border-gray-300">{user.status}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
