@@ -46,8 +46,8 @@ export default function StudentPortal() {
     }
   }, [loadingStudent, studentData, servicios]);
 
-  const studentName = studentData?.full_name || 
-    `${studentData?.f_name || ''} ${studentData?.m_name || ''} ${studentData?.f_lastname || ''} ${studentData?.s_lastname || ''}`.trim() || 
+  const studentName = 
+    `${studentData?.f_name || ''}  ${studentData?.f_lastname || ''} `.trim() || 
     "Estudiante";
 
 
