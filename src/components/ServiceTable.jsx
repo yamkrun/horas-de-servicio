@@ -1,17 +1,8 @@
 
-import React, { useState, useEffect } from "react";
-import { api } from "../libs/axios";
+import React from "react";
+export function ServiceTable({ servicios = [] }) {
 
-export function ServiceTable() {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState("");
-git 
-  useEffect(() => {
-    api
-      .get("/services")
-      .then((response) => setData(response.data))
-      .catch((error) => setError(error.message || "Error al cargar servicios"));
-  }, []);
+  
   return (
     <div className="p-6 ">
       <div className="overflow-x-auto ">
@@ -42,29 +33,30 @@ git
             </tr>
           </thead>
           <tbody>
-
-            {response.map((servicio) => (
+            {servicios.map((servicio) => (
               <tr key={servicio.id} className="hover:bg-gray-200">
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   {servicio.id}
                 </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
-                  {servicio.categoria}
+                  {servicio.category?.name || 'Sin categoría'}
                 </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
-                  {servicio.horas}
+                  {servicio.amount_approved || 0}
                 </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
-                  {servicio.fecha}
+                  {new Date(servicio.created_at).toLocaleDateString()}
                 </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   <span
                     className={`px-2 py-1 rounded text-sm ${
-                      servicio.status === "Completado"
-                        ? "bg-blue-300 text-black"
-                        : servicio.status === "En progreso"
+                      servicio.status === "Approved"
                         ? "bg-green-300 text-black"
-                        : "bg-red-400 text-black"
+                        : servicio.status === "Pending"
+                        ? "bg-yellow-300 text-black"
+                        : servicio.status === "Rejected"
+                        ? "bg-red-400 text-black"
+                        : "bg-gray-300 text-black"
                     }`}
                   >
                     {servicio.status}
