@@ -13,7 +13,6 @@ export default function StudentPortal() {
   const [loadingServicios, setLoadingServicios] = useState(true);
   const [errorServicios, setErrorServicios] = useState(null);
 
- 
   useEffect(() => {
     api.get("/auth/profile") 
       .then((response) => {
@@ -25,7 +24,6 @@ export default function StudentPortal() {
         setLoadingStudent(false);
       });
   }, []);
-
   
   useEffect(() => {
     api.get("/services")
