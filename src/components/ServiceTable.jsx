@@ -4,7 +4,7 @@ import { api } from "../libs/axios";
 export function ServiceTable() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
-
+git 
   useEffect(() => {
     api
       .get("/services")
