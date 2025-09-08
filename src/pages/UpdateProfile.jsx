@@ -60,7 +60,7 @@ export default function UpdateProfile() {
   if (loading) return <p className="m-6">Cargando perfil...</p>;
 
   return (
-    <div className="min-h-screen bg-[#f2f3f7] flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-md shadow-md w-full max-w-md"
