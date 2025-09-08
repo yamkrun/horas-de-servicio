@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import StudentsTable from "../components/StudentsTable";
 
 export default function Admin() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [recruiter, setRecruiter] = useState([]);
   const [controllers, setControllers] = useState([]);
   const [admin, setAdmin] = useState([]);
@@ -16,32 +16,28 @@ export default function Admin() {
     navigate("/register");
   };
   useEffect(() => {
-    api
-      .get("/users?r=1")
-      .then((res) => setAdmin(res.data))
-      .catch((err) => console.error("Error cargando admins:", err));
-  });
+    const fetchData = async () => {
+      try {
+        const [adminRes, controllersRes, recruiterRes, studentsRes] =
+          await Promise.all([
+            api.get("/users?r=1"),
+            api.get("/users?r=2"),
+            api.get("/users?r=3"),
+            api.get("/students"),
+          ]);
 
-  useEffect(() => {
-    api
-      .get("/students")
-      .then((res) => setStudents(res.data))
-      .catch((err) => console.error("Error cargando admins:", err));
-  });
+        setAdmin(adminRes.data);
+        setControllers(controllersRes.data);
+        setRecruiter(recruiterRes.data);
+        setStudents(studentsRes.data);
+      } catch (err) {
+        console.error("Error cargando datos:", err);
+      }
+    };
 
-  useEffect(() => {
-    api
-      .get("/users?r=3")
-      .then((res) => setRecruiter(res.data))
-      .catch((err) => console.error("Error cargando admins:", err));
-  });
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    api
-      .get("/users?r=2")
-      .then((res) => setControllers(res.data))
-      .catch((err) => console.error("Error cargando admins:", err));
-  });
   return (
     <>
       <main className="bg-[#f2f3f7]">
@@ -84,7 +80,7 @@ export default function Admin() {
               Add Student
             </button>
           </div>
-           <StudentsTable data={students}></StudentsTable>
+          <StudentsTable data={students}></StudentsTable>
         </div>
       </main>
     </>
