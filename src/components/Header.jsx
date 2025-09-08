@@ -13,7 +13,7 @@ export default function Header({ menuOpen, setMenuOpen }) {
           { label: "Services", href: "#" },
         ]
       : []),
-    { label: "Modificar Perfil", href: "#" },
+    { label: "Modificar Perfil", href: "/updateprofile" },
     { label: "Cerrar sesión", href: "#" },
   ];
 

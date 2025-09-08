@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import Student from "./pages/Student";
 import Register from "./pages/Register";
+import UpdateProfile from "./pages/UpdateProfile";
 import Layout from "./layout/Layout";
 
 export default function App() {
@@ -12,10 +13,11 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route element={<Layout />}>
-        <Route path="/Admin" element={<Admin />} />
-        <Route path="/Student" element={<Student />} />
+          <Route path="/Admin" element={<Admin />} />
+          <Route path="/Student" element={<Student />} />
           <Route path="/register" element={<Register />} />{" "}
-         </Route>
+          <Route path="/updateprofile" element={<UpdateProfile />} />
+        </Route>
       </Routes>
     </div>
   );
