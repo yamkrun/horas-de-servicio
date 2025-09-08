@@ -1,4 +1,4 @@
-// src/pages/UpdateProfile.jsx
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../libs/axios";
@@ -16,7 +16,6 @@ export default function UpdateProfile() {
 
   const navigate = useNavigate();
 
-  // Cargar datos actuales del perfil
   useEffect(() => {
     api
       .get("/auth/profile")
@@ -31,13 +30,11 @@ export default function UpdateProfile() {
       });
   }, []);
 
-  // Manejar cambios en inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Enviar actualización
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -50,17 +47,17 @@ export default function UpdateProfile() {
         f_lastname: formData.f_lastname,
         s_lastname: formData.s_lastname,
       });
-      setSuccess("Perfil actualizado correctamente ✅");
-      setTimeout(() => navigate("/student"), 1500); // redirigir
+      setSuccess("Perfil actualizado correctamente");
+      setTimeout(() => navigate("/student"), 1500);
     } catch (err) {
-      setError("Error al actualizar el perfil ❌");
+      setError("Error al actualizar el perfil");
     }
   };
 
   if (loading) return <p className="m-6">Cargando perfil...</p>;
 
   return (
-    <div className="min-h-screen bg-[#f2f3f7] flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-md shadow-md w-full max-w-md"

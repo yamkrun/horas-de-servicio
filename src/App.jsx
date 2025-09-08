@@ -21,6 +21,7 @@ export default function App() {
             <Route path="/register" element={<Register />} />{" "}
             <Route path="/updateprofile" element={<UpdateProfile />} />
             <Route path="/studentprofile" element={<StudentProfile />} />
+
           </Route>
         </Routes>
       </div>
