@@ -50,10 +50,10 @@ export default function UpdateProfile() {
         f_lastname: formData.f_lastname,
         s_lastname: formData.s_lastname,
       });
-      setSuccess("Perfil actualizado correctamente ✅");
-      setTimeout(() => navigate("/student"), 1500); // redirigir
+      setSuccess("Perfil actualizado correctamente");
+      setTimeout(() => navigate("/student"), 1500);
     } catch (err) {
-      setError("Error al actualizar el perfil ❌");
+      setError("Error al actualizar el perfil");
     }
   };
 
