@@ -9,7 +9,7 @@ export default function StudentProfile() {
   ]);
 
   const student = {
-    fullName: "Juan Pérez",
+    fullName: "Juan Pérez Amato",
     nationality: "Argentina",
     school: "Escuela Técnica N°1",
     phone: "+54 11 1234-5678",
