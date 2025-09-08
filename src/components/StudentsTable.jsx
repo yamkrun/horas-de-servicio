@@ -16,10 +16,10 @@ export default function StudentsTable({ data = [] }) {
               Phone
             </th>
             <th className="border border-gray-300 px-4 py-3  text-black font-medium">
-              País
+              Escuela
             </th>
             <th className="border border-gray-300 px-4 py-3  text-black font-medium">
-              Escuela
+              Controller
             </th>
             <th className="border border-gray-300 px-4 py-3  text-black font-medium">
               Recruiter
