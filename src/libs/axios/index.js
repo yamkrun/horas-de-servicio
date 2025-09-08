@@ -1,10 +1,16 @@
 import axios from "axios";
 
+
 export const api = axios.create({
-  
   baseURL: "https://www.hs-service.api.crealape.com/api/v1/",
   withCredentials: true,
 });
+
+// Configurar el header Authorization si el token existe
+const token = localStorage.getItem('token');
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 
 

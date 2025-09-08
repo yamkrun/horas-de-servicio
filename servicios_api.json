@@ -1,0 +1,7 @@
+﻿Invoke-WebRequest : Error en el servidor remoto: (401) No autorizado.
+En línea: 1 Carácter: 2
++ (Invoke-WebRequest -Uri https://www.hs-service.api.crealape.com/api/v ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-WebRequest], WebException
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
+ 

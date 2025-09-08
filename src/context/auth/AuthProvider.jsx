@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
 
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem('token');
+  const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
       if (!token) {
         setLoading(false);
         return;
@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
       const response = await api.post('/auth/login', { email, password });
       const { token, user } = response.data;
       
-      localStorage.setItem('token', token);
+  document.cookie = `token=${token}; path=/;`;
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       setUser(user);
@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+  document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     delete api.defaults.headers.common['Authorization'];
     setUser(null);
     navigate('/login');
