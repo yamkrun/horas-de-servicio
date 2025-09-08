@@ -1,4 +1,3 @@
-// src/pages/UpdateProfile.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../libs/axios";
@@ -16,7 +15,6 @@ export default function UpdateProfile() {
 
   const navigate = useNavigate();
 
-  // Cargar datos actuales del perfil
   useEffect(() => {
     api
       .get("/auth/profile")
@@ -31,13 +29,11 @@ export default function UpdateProfile() {
       });
   }, []);
 
-  // Manejar cambios en inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Enviar actualización
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
