@@ -1,16 +1,23 @@
-import React, { useState } from "react";
-import { api as axios } from "../libs/axios";
+import React, { useState, useEffect } from "react";
+import { api } from "../libs/axios";
 
 export default function CreateService() {
   const [form, setForm] = useState({
     amount_reported: "",
     description: "",
     category_id: "",
-    evidence: ""
+    evidence: null
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api.get("/categories")
+      .then(res => setCategories(res.data))
+      .catch(() => setCategories([]));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -33,19 +40,7 @@ export default function CreateService() {
       setError("");
       setForm((prev) => ({ ...prev, evidence: file }));
     } else {
-      // Validar que los enteros sean positivos
-      if (name === "amount_reported" || name === "category_id") {
-        const intValue = parseInt(value);
-        if (isNaN(intValue) || intValue <= 0) {
-          setError("El valor debe ser un número entero positivo.");
-          setForm((prev) => ({ ...prev, [name]: "" }));
-          return;
-        }
-        setError("");
-        setForm((prev) => ({ ...prev, [name]: intValue }));
-      } else {
-        setForm((prev) => ({ ...prev, [name]: value }));
-      }
+      setForm((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -54,8 +49,6 @@ export default function CreateService() {
     setLoading(true);
     setError("");
     setSuccess("");
-    
-   
     try {
       const formData = new FormData();
       formData.append("amount_reported", form.amount_reported);
@@ -64,7 +57,7 @@ export default function CreateService() {
       if (form.evidence) {
         formData.append("evidence", form.evidence, form.evidence.name);
       }
-      await axios.post("/services", formData, {
+      await api.post("/services", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -78,7 +71,7 @@ export default function CreateService() {
   };
 
   return (
-  <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50 overflow-y-hidden">
+    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50 overflow-y-hidden">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Horas de Servicio"
@@ -94,6 +87,25 @@ export default function CreateService() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
+              Categoría
+            </label>
+            <div className="mt-2">
+              <select
+                name="category_id"
+                value={form.category_id}
+                onChange={handleChange}
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                required
+              >
+                <option value="">Selecciona una categoría</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
               Monto reportado
             </label>
             <div className="mt-2">
@@ -103,7 +115,8 @@ export default function CreateService() {
                 value={form.amount_reported}
                 onChange={handleChange}
                 placeholder="Ej: 3"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                required
               />
             </div>
           </div>
@@ -118,22 +131,8 @@ export default function CreateService() {
                 value={form.description}
                 onChange={handleChange}
                 placeholder="Test reporte Horas de servicio"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Categoría ID
-            </label>
-            <div className="mt-2">
-              <input
-                type="number"
-                name="category_id"
-                value={form.category_id}
-                onChange={handleChange}
-                placeholder="Ej: 1"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                required
               />
             </div>
           </div>
