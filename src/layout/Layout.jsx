@@ -6,9 +6,8 @@ export default function Layout({ data }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div>
+    <div className="overflow-y-hidden">
       <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-
       <Outlet />
       <footer className="bg-blue-900 text-white py-6">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">

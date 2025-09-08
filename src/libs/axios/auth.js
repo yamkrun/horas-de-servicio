@@ -1,5 +1,10 @@
 import { api } from ".";
 
+const token = localStorage.getItem('token');
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
  export const logIn = async(body) =>{
     try {
         const { data, status } = await api.post('/auth/login', body);
