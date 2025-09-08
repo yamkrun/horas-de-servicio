@@ -9,21 +9,28 @@ export default function Register() {
   const [schools, setSchools] = useState([]);
   const [controllers, setControllers] = useState([]);
   const [recruiters, setRecruiters] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   // Cargar escuelas, controllers y recruiters al montar el componente
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [schoolsResponse, controllersResponse, recruitersResponse] =
-          await Promise.all([
-            api.get("/schools/"),
-            api.get("/users/?r=2"),
-            api.get("/users/?r=3"),
-          ]);
+        const [
+          schoolsResponse,
+          controllersResponse,
+          recruitersResponse,
+          countriesResponse,
+        ] = await Promise.all([
+          api.get("/schools/"),
+          api.get("/users/?r=2"),
+          api.get("/users/?r=3"),
+          api.get("/countries/"),
+        ]);
 
         setSchools(schoolsResponse.data);
         setControllers(controllersResponse.data);
         setRecruiters(recruitersResponse.data);
+        setCountries(countriesResponse.data);
       } catch (error) {
         setError(error.message || "Error al cargar datos.");
       }
@@ -41,13 +48,13 @@ export default function Register() {
 
     body.schools = body.schools ? [body.schools] : [];
     body.role_id = 4;
-    body.country_id = 4;
+    body.country_id = parseInt(body.country_id, 10);
 
     try {
       const response = await api.post("/users/", body);
 
       if (response.data) {
-        navigate("/Admin");
+        navigate("/admin");
       } else {
         throw new Error("No se pudo crear el usuario.");
       }
@@ -59,7 +66,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50">
+    <div className="flex flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Your Company"
@@ -73,187 +80,219 @@ export default function Register() {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Nombre */}
-          <div>
-            <label
-              htmlFor="f_name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Primer nombre
-            </label>
-            <div className="mt-2">
-              <input
-                id="f_name"
-                type="text"
-                name="f_name"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="s_name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Segundo nombre
-            </label>
-            <div className="mt-2">
-              <input
-                id="s_name"
-                type="text"
-                name="s_name"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          {/* Apellido */}
-          <div>
-            <label
-              htmlFor="f_lastname"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Primer apellido
-            </label>
-            <div className="mt-2">
-              <input
-                id="f_lastname"
-                type="text"
-                name="f_lastname"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="s_lastname"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Primer apellido
-            </label>
-            <div className="mt-2">
-              <input
-                id="s_lastname"
-                type="text"
-                name="s_lastname"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          {/* Email */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                type="email"
-                name="email"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          {/* Contraseña */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Contraseña
-            </label>
-            <div className="mt-2">
-              <input
-                id="password"
-                type="password"
-                name="password"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          {/* School (Escuela) */}
-          <div>
-            <label
-              htmlFor="schools"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Escuela
-            </label>
-            <div className="mt-2">
-              <select
-                id="schools"
-                name="schools"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          {/* Nombres */}
+          <div className="flex flex-row gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="f_name"
+                className="block text-sm font-medium text-gray-700"
               >
-                {schools.map((school) => (
-                  <option key={school.id} value={school.id}>
-                    {school.name}
-                  </option>
-                ))}
-              </select>
+                Primer nombre
+              </label>
+              <div className="mt-2">
+                <input
+                  id="f_name"
+                  type="text"
+                  name="f_name"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex-1">
+              <label
+                htmlFor="s_name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Segundo nombre
+              </label>
+              <div className="mt-2">
+                <input
+                  id="s_name"
+                  type="text"
+                  name="s_name"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Controller ID */}
-          <div>
-            <label
-              htmlFor="controller_id"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Controller
-            </label>
-            <div className="mt-2">
-              <select
-                id="controller_id"
-                name="controller_id"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          {/* Apellidos */}
+          <div className="flex flex-row gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="f_lastname"
+                className="block text-sm font-medium text-gray-700"
               >
-                {controllers.map((controller) => (
-                  <option key={controller.id} value={controller.id}>
-                    {controller.f_name} {controller.f_lastname}
-                  </option>
-                ))}
-              </select>
+                Primer apellido
+              </label>
+              <div className="mt-2">
+                <input
+                  id="f_lastname"
+                  type="text"
+                  name="f_lastname"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex-1">
+              <label
+                htmlFor="s_lastname"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Segundo apellido
+              </label>
+              <div className="mt-2">
+                <input
+                  id="s_lastname"
+                  type="text"
+                  name="s_lastname"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Recruiter ID */}
-          <div>
-            <label
-              htmlFor="recruiter_id"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Recruiter
-            </label>
-            <div className="mt-2">
-              <select
-                id="recruiter_id"
-                name="recruiter_id"
-                required
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          {/* Email + Contraseña */}
+          <div className="flex flex-row gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
               >
-                {recruiters.map((recruiter) => (
-                  <option key={recruiter.id} value={recruiter.id}>
-                    {recruiter.f_name} {recruiter.f_lastname}
-                  </option>
-                ))}
-              </select>
+                Email
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Contraseña
+              </label>
+              <div className="mt-2">
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Escuela + Controller */}
+          <div className="flex flex-row gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="schools"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Escuela
+              </label>
+              <div className="mt-2">
+                <select
+                  id="schools"
+                  name="schools"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  {schools.map((school) => (
+                    <option key={school.id} value={school.id}>
+                      {school.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex-1">
+              <label
+                htmlFor="controller_id"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Controller
+              </label>
+              <div className="mt-2">
+                <select
+                  id="controller_id"
+                  name="controller_id"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  {controllers.map((controller) => (
+                    <option key={controller.id} value={controller.id}>
+                      {controller.f_name} {controller.f_lastname}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Recruiter + País */}
+          <div className="flex flex-row gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="recruiter_id"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Recruiter
+              </label>
+              <div className="mt-2">
+                <select
+                  id="recruiter_id"
+                  name="recruiter_id"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  {recruiters.map((recruiter) => (
+                    <option key={recruiter.id} value={recruiter.id}>
+                      {recruiter.f_name} {recruiter.f_lastname}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex-1">
+              <label
+                htmlFor="country_id"
+                className="block text-sm font-medium text-gray-700"
+              >
+                País
+              </label>
+              <div className="mt-2">
+                <select
+                  id="country_id"
+                  name="country_id"
+                  required
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  <option value="">Selecciona un país</option>
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
