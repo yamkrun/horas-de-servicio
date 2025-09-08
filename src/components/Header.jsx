@@ -1,6 +1,8 @@
 import React from "react";
 import { FiMenu } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
+import { logOut } from "../libs/axios/auth";
+
 
 export default function Header({ menuOpen, setMenuOpen }) {
   const location = useLocation();
@@ -14,7 +16,7 @@ export default function Header({ menuOpen, setMenuOpen }) {
         ]
       : []),
     { label: "Modificar Perfil", href: "/updateprofile" },
-    { label: "Cerrar sesión", href: "#" },
+    { label: "Cerrar sesión", href: "/", onClick: () => logOut() }
   ];
 
   return (
@@ -24,34 +26,28 @@ export default function Header({ menuOpen, setMenuOpen }) {
           {isAdmin ? "Admin" : "Estudiante"}
         </div>
 
+        {/* Links para desktop */}
         <nav className="hidden md:flex gap-6">
           {links.map((link) => (
-            <a key={link.label} href={link.href} className="hover:underline">
+            <a
+              key={link.label}
+              href={link.href}
+              className="hover:underline"
+              onClick={link.onClick ? link.onClick : undefined}
+            >
               {link.label}
             </a>
           ))}
         </nav>
 
+        {/* Botón menú para mobile */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden bg-blue-800 text-white font-bold text-3xl px-3 py-1 rounded-lg shadow hover:bg-gray-200"
+          aria-label="Abrir menú"
         >
           <FiMenu />
         </button>
-
-        {menuOpen && (
-          <div className="absolute top-16 right-6 bg-[#ffffff] text-black shadow-lg flex flex-col items-start p-4 gap-4 md:hidden">
-            {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="hover:bg-gray-200"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        )}
       </header>
     </div>
   );
