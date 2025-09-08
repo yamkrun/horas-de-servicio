@@ -23,14 +23,15 @@ export function ServiceTable({ servicios = [] }) {
         <table className="w-full border-collapse border border-gray-300 text-center">
           <thead>
             <tr className="bg-gray-400">
-              <th className="border border-gray-300 px-2 py-3  text-black font-medium">
-                ID
-              </th>
+              
               <th className="border border-gray-300 px-4 py-3  text-black font-medium">
                 Categoría
               </th>
               <th className="border border-gray-300 px-4 py-3  text-black font-medium">
-                Horas
+                Horas reportadas
+              </th>
+              <th className="border border-gray-300 px-4 py-3  text-black font-medium">
+                Horas aprobadas
               </th>
               <th className="border border-gray-300 px-4 py-3  text-black font-medium">
                 Fecha
@@ -49,11 +50,12 @@ export function ServiceTable({ servicios = [] }) {
           <tbody>
             {servicios.map((servicio) => (
               <tr key={servicio.id} className="hover:bg-gray-200">
-                <td className="border border-gray-300 px-4 py-3 text-black">
-                  {servicio.id}
-                </td>
+                
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   {servicio.category?.name || 'Sin categoría'}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {servicio.amount_reported || 0}
                 </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   {servicio.amount_approved || 0}

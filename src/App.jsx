@@ -9,6 +9,7 @@ import CreateService from "./pages/CreateService";
 import EvidenceViewer from "./pages/EvidenceViewer";
 import { AuthProvider } from "./context/auth/AuthProvider.jsx";
 import StudentProfile from "./pages/StudentProfile.jsx";
+import EditService from "./pages/EditService.jsx";
 
 export default function App() {
   return (
@@ -22,9 +23,10 @@ export default function App() {
           <Route path="/student" element={<Student />} />
           <Route path="/student/create-service" element={<CreateService />} />
           <Route path="/student/evidence/:id" element={<EvidenceViewer />} />
+          <Route path="/student/edit-service/:id" element={<EditService />} />
           <Route path="/register" element={<Register />} />
           <Route path="/updateprofile" element={<UpdateProfile />} />
-             <Route path="/studentprofile" element={<StudentProfile />} />
+          <Route path="/studentprofile" element={<StudentProfile />} />
         </Route>
       </Routes>
     </div>
