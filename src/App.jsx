@@ -5,18 +5,22 @@ import Student from "./pages/Student";
 import Register from "./pages/Register";
 import Layout from "./layout/Layout";
 
+import { AuthProvider } from "./context/auth/AuthProvider.jsx";
+
 export default function App() {
   return (
-    <div className="bg-[#f2f3f7]">
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route element={<Layout />}>
-        <Route path="/Admin" element={<Admin />} />
-        <Route path="/Student" element={<Student />} />
-          <Route path="/register" element={<Register />} />{" "}
-         </Route>
-      </Routes>
-    </div>
+    <AuthProvider>
+      <div className="bg-[#f2f3f7]">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<Layout />}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/student" element={<Student />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+        </Routes>
+      </div>
+    </AuthProvider>
   );
 }
