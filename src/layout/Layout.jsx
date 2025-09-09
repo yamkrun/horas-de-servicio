@@ -5,6 +5,7 @@ import TableUsers from "../components/TableUsers";
 import StudentsTable from "../components/StudentsTable";
 import { ServiceTable } from "../components/ServiceTable";
 import { api } from "../libs/axios";
+import Dashboard from "../components/Dashboard";
 
 export default function Layout({ data }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -95,7 +96,7 @@ export default function Layout({ data }) {
         return (
           <div className="space-y-8">
             <h2 className="text-2xl font-bold mb-2">Home</h2>
-            <TableUsers data={admin} filterRole={"Admin"} />
+            <Dashboard></Dashboard>
           </div>
         );
     }
