@@ -21,7 +21,7 @@ export default function Header({ menuOpen, setMenuOpen }) {
 
   return (
     <div>
-      <header className="bg-blue-800 text-white px-6 py-4 shadow-md flex justify-between items-center relative">
+  <header className="bg-gray-100 text-gray-800 px-6 py-8 shadow-md flex justify-between items-center relative">
         <div className="text-xl font-bold">
           {isAdmin ? "Admin" : "Estudiante"}
         </div>
