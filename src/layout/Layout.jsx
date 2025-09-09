@@ -133,6 +133,7 @@ export default function Layout({ data }) {
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <main className="flex-1 p-6">
           {renderContent()}
+          <Outlet />
           {/* Si quieres mantener el Outlet para rutas, puedes moverlo aquí o dejarlo fuera */}
           {/* <Outlet /> */}
         </main>

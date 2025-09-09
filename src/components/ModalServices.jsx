@@ -5,6 +5,9 @@ import { api } from "../libs/axios";
 export default function ModalServices({ servicio, onClose, onUpdate }) {
   const [status, setStatus] = useState(servicio.status || "Pending");
   const [comment, setComment] = useState(servicio.comment || "");
+  const [amountApproved, setAmountApproved] = useState(
+    servicio.amount_approved ?? 0
+  );
   if (!servicio) return null;
 
   const handleSave = async () => {
@@ -12,7 +15,7 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
       const res = await api.patch(`/review/${servicio.id}`, {
         status,
         comment,
-        amount_approved: servicio.amount_approved ?? 0,
+        amount_approved: amountApproved,
       });
 
       if (res.status >= 200 && res.status < 300) {
@@ -20,6 +23,7 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
           ...servicio,
           status,
           comment,
+          amount_approved: amountApproved,
         };
 
         if (onUpdate) onUpdate(updatedService);
@@ -144,17 +148,36 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-2">Revisión</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block font-medium mb-1">Estado</label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full border rounded px-3 py-2"
-              >
-                <option value="Pending">Pendiente</option>
-                <option value="Approved">Aprobado</option>
-                <option value="Rejected">Rechazado</option>
-              </select>
+            {/* Columna combinada para Estado y Horas aprobadas */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block font-medium mb-1">Estado</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="w-full border rounded px-3 py-2"
+                >
+                  <option value="Pending">Pendiente</option>
+                  <option value="Approved">Aprobado</option>
+                  <option value="Rejected">Rechazado</option>
+                </select>
+              </div>
+              <div>
+                <label className="block font-medium mb-1">
+                  Horas aprobadas
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max={servicio.amount_reported}
+                  value={amountApproved}
+                  onChange={(e) => setAmountApproved(Number(e.target.value))}
+                  className="w-full border rounded px-3 py-2"
+                />
+                <p className="text-sm text-gray-500">
+                  Reportadas: {servicio.amount_reported || 0}
+                </p>
+              </div>
             </div>
             <div>
               <label className="block font-medium mb-1">Comentario</label>
