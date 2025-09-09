@@ -56,7 +56,7 @@ export default function StudentPortal() {
 
 
   return (
-    <div className="min-h-screen bg-[#f2f3f7]">
+    <div className=" bg-[#f2f3f7]">
       {/* Contenido principal */}
       {loadingStudent ? (
         <p className="m-6">Cargando datos del estudiante...</p>
