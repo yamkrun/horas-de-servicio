@@ -25,7 +25,6 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
         <table className="w-full border-collapse border border-gray-300 text-center">
           <thead>
             <tr className="bg-gray-400">
-              
               <th className="border border-gray-300 px-4 py-3  text-black font-medium">
                 Categoría
               </th>
@@ -52,7 +51,6 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
           <tbody>
             {servicios.map((servicio) => (
               <tr key={servicio.id} className="hover:bg-gray-200">
-                
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   {servicio.category?.name || "Sin categoría"}
                 </td>
@@ -80,12 +78,12 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
                     {servicio.status}
                   </span>
                 </td>
-                <td className="border border-gray-300 px-4 flex justify-center py-3 text-black">
+                <td className="border border-gray-300 px-4 py-3 text-black">
                   <button
                     onClick={() => {
                       navigate(`/student/evidence/${servicio.id}`);
                     }}
-                    className="bg-gray-200 hover:bg-gray-300 text-black flex px-3 py-1 rounded border border-gray-400 text-sm"
+                    className="bg-gray-200 hover:bg-gray-300 text-black flex m-auto px-3 py-1 rounded border border-gray-400 text-sm"
                   >
                     Ver PDF
                   </button>

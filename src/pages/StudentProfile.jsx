@@ -4,8 +4,27 @@ import { ServiceTable } from "../components/ServiceTable";
 import { useParams } from "react-router-dom";
 export default function StudentProfile() {
   const { id } = useParams();
-
+  const [servicios, setServicios] = useState([]);
   const [student, setStudent] = useState(null);
+  const [loadingServicios, setLoadingServicios] = useState(true);
+  const [errorServicios, setErrorServicios] = useState(null);
+
+  useEffect(() => {
+    api
+      .get("/services")
+      .then((response) => {
+        setServicios(response.data);
+        setLoadingServicios(false);
+      })
+      .catch((err) => {
+        setErrorServicios(err);
+        setLoadingServicios(false);
+      });
+  }, []);
+
+  const serviciosDelEstudiante = servicios.filter(
+    (s) => s.user?.id === student.id
+  );
 
   useEffect(() => {
     const fetchStudent = async () => {
@@ -121,7 +140,7 @@ export default function StudentProfile() {
           Horas de Servicio
         </h2>
         <div className="overflow-x-auto">
-          <ServiceTable servicios={student.services} mode={"admin"} />
+          <ServiceTable servicios={serviciosDelEstudiante} mode={"admin"} />
         </div>
       </div>
     </div>
