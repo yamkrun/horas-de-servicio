@@ -47,16 +47,7 @@ export default function Layout({ data }) {
     "Servicios",
   ];
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-
-      {/* El contenido crece y llena el espacio entre header y footer */}
-      <main className="flex-1 flex flex-col justify-center">
-        <Outlet />
-      </main>
-
-
+  // ...existing code...
   const renderContent = () => {
     switch (selectedOption) {
       case "Administradores":

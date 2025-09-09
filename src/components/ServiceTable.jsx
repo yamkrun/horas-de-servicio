@@ -91,24 +91,16 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
                 {mode === "student" ? (
                   <td className="border border-gray-300 px-4 py-3 text-black">
                     <button
-
-                      className={`p-1 rounded ${servicio.status === 'Approved' ? 'bg-gray-300 cursor-not-allowed' : 'hover:bg-gray-200'}`}
-
                       className={`p-1 rounded ${
                         servicio.status === "Approved"
                           ? "bg-gray-300 cursor-not-allowed"
                           : "hover:bg-gray-200"
                       }`}
-
                       onClick={() => {
                         if (servicio.status !== "Approved") {
                           navigate(`/student/edit-service/${servicio.id}`);
                         }
                       }}
-
-                      disabled={servicio.status === 'Approved'}
-                      title={servicio.status === 'Approved' ? 'No puedes modificar un servicio aprobado' : 'Modificar'}
-
                       disabled={servicio.status === "Approved"}
                       title={
                         servicio.status === "Approved"
