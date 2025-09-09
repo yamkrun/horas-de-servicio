@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../libs/axios";
@@ -9,6 +8,8 @@ export default function UpdateProfile() {
     s_name: "",
     f_lastname: "",
     s_lastname: "",
+    id: null,
+    role_id: null,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,11 +21,12 @@ export default function UpdateProfile() {
     api
       .get("/auth/profile")
       .then((res) => {
-        const { f_name, s_name, f_lastname, s_lastname, id } = res.data;
-        setFormData({ f_name, s_name, f_lastname, s_lastname, id });
+        const { f_name, s_name, f_lastname, s_lastname, id, role_id } =
+          res.data;
+        setFormData({ f_name, s_name, f_lastname, s_lastname, id, role_id });
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError("Error al cargar el perfil");
         setLoading(false);
       });
@@ -47,8 +49,28 @@ export default function UpdateProfile() {
         f_lastname: formData.f_lastname,
         s_lastname: formData.s_lastname,
       });
+
       setSuccess("Perfil actualizado correctamente");
-      setTimeout(() => navigate("/student"), 1500);
+
+      setTimeout(() => {
+        switch (formData.role_id) {
+          case 1:
+            navigate("/admin");
+            break;
+          case 2:
+            navigate("/student");
+            break;
+          case 3:
+            navigate("/recruiter");
+            break;
+          case 4:
+            navigate("/controller");
+            break;
+          default:
+            navigate("/");
+            break;
+        }
+      }, 1500);
     } catch (err) {
       setError("Error al actualizar el perfil");
     }
