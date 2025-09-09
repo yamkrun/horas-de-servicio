@@ -9,6 +9,7 @@ import CreateService from "./pages/CreateService";
 import EvidenceViewer from "./pages/EvidenceViewer";
 import { AuthProvider } from "./context/auth/AuthProvider.jsx";
 import StudentProfile from "./pages/StudentProfile.jsx";
+import EditService from "./pages/EditService.jsx";
 
 export default function App() {
   return (

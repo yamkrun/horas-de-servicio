@@ -64,11 +64,11 @@ export default function StudentPortal() {
         <p className="m-6 text-red-500">Error al cargar datos del estudiante</p>
       ) : (
         <>
-          <h2 className="text-2xl font-bold text-gray-900 m-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 m-6">
             Bienvenido, {studentName}
           </h2>
           <main className="max-w-7xl bg-[#ffffff] mx-auto lg:rounded-md px-4 sm:px-6 lg:px-8 py-8">
-            <p className="text-gray-600">Horas de Servicio</p>
+            <p className="text-gray-600 text-2xl md:text-3xl lg:text-4xl">Horas de Servicio</p>
             {loadingServicios ? (
               <p className="text-gray-600">Cargando horas de servicio...</p>
             ) : errorServicios ? (
