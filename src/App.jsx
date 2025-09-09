@@ -13,24 +13,22 @@ import EditService from "./pages/EditService.jsx";
 
 export default function App() {
   return (
-     <AuthProvider>
-    <div className="bg-[#f2f3f7]">
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route element={<Layout />}>
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/student" element={<Student />} />
-          <Route path="/student/create-service" element={<CreateService />} />
-          <Route path="/student/evidence/:id" element={<EvidenceViewer />} />
-          <Route path="/student/edit-service/:id" element={<EditService />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/updateprofile" element={<UpdateProfile />} />
-          <Route path="/studentprofile" element={<StudentProfile />} />
-        </Route>
-      </Routes>
-    </div>
- </AuthProvider>
-
+    <AuthProvider>
+      <div className="bg-[#f2f3f7]">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<Layout />}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/student" element={<Student />} />
+            <Route path="/student/create-service" element={<CreateService />} />
+            <Route path="/student/evidence/:id" element={<EvidenceViewer />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/updateprofile" element={<UpdateProfile />} />
+            <Route path="/studentprofile/:id" element={<StudentProfile />} />
+          </Route>
+        </Routes>
+      </div>
+    </AuthProvider>
   );
 }
