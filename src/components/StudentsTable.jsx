@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function StudentsTable({ data = [] }) {
   const navigate = useNavigate();
+
   return (
     <div className="overflow-x-auto p-6">
       <table className=" w-full border-collapse border border-gray-300 text-center">
@@ -33,8 +34,8 @@ export default function StudentsTable({ data = [] }) {
             data.map((student) => (
               <tr key={student.id}>
                 <td
-                  onClick={() => navigate("/studentprofile")}
-                  className="px-6 py-4  border border-gray-300"
+                  onClick={() => navigate(`/studentprofile/${student.id}`)}
+                  className="px-6 py-4  border border-gray-300 hover:text-blue-600 cursor-pointer"
                 >
                   {student.full_name || "N/A"}
                 </td>

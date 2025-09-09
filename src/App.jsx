@@ -25,10 +25,10 @@ export default function App() {
             <Route path="/student/create-service" element={<CreateService />} />
             <Route path="/student/evidence/:id" element={<EvidenceViewer />} />
             <Route path="/student/edit-service/:id" element={<EditService />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/register" element={<Register />} />
             <Route path="/updateprofile" element={<UpdateProfile />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/studentprofile" element={<StudentProfile />} />
+            <Route path="/studentprofile/:id" element={<StudentProfile />} />
           </Route>
         </Routes>
       </div>
