@@ -18,14 +18,19 @@ export default function Layout({ data }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [adminRes, controllersRes, recruiterRes, studentsRes, serviciosRes] =
-          await Promise.all([
-            api.get("/users?r=1"),
-            api.get("/users?r=2"),
-            api.get("/users?r=3"),
-            api.get("/students"),
-            api.get("/services"),
-          ]);
+        const [
+          adminRes,
+          controllersRes,
+          recruiterRes,
+          studentsRes,
+          serviciosRes,
+        ] = await Promise.all([
+          api.get("/users?r=1"),
+          api.get("/users?r=2"),
+          api.get("/users?r=3"),
+          api.get("/students"),
+          api.get("/services"),
+        ]);
 
         setAdmin(adminRes.data);
         setControllers(controllersRes.data);
@@ -40,6 +45,7 @@ export default function Layout({ data }) {
   }, []);
 
   const menuOptions = [
+    "Home",
     "Administradores",
     "Controllers",
     "Recruiters",
@@ -86,7 +92,12 @@ export default function Layout({ data }) {
           </div>
         );
       default:
-        return <div>Selecciona una opción del menú</div>;
+        return (
+          <div className="space-y-8">
+            <h2 className="text-2xl font-bold mb-2">Home</h2>
+            <TableUsers data={admin} filterRole={"Admin"} />
+          </div>
+        );
     }
   };
 
@@ -105,7 +116,9 @@ export default function Layout({ data }) {
           {menuOptions.map((option) => (
             <li key={option}>
               <button
-                className={`w-full text-left px-3 py-2 rounded hover:bg-blue-200 ${selectedOption === option ? "bg-blue-300 font-semibold" : ""}`}
+                className={`w-full text-left px-3 py-2 rounded hover:bg-blue-200 ${
+                  selectedOption === option ? "bg-blue-300 font-semibold" : ""
+                }`}
                 onClick={() => setSelectedOption(option)}
               >
                 {option}
@@ -123,12 +136,13 @@ export default function Layout({ data }) {
           {/* Si quieres mantener el Outlet para rutas, puedes moverlo aquí o dejarlo fuera */}
           {/* <Outlet /> */}
         </main>
-  <footer className="bg-gray-100 text-gray-800 py-6 mt-auto border-t border-gray-300">
+        <footer className="bg-gray-100 text-gray-800 py-6 mt-auto border-t border-gray-300">
           <div className="container mx-auto px-4 flex justify-end items-center">
             <div className="text-right">
               <div className="text-lg font-semibold">MiSitio</div>
               <div className="text-sm">
-                © {new Date().getFullYear()} MiSitio. Todos los derechos reservados.
+                © {new Date().getFullYear()} MiSitio. Todos los derechos
+                reservados.
               </div>
             </div>
           </div>
