@@ -91,32 +91,41 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
                 {mode === "student" ? (
                   <td className="border border-gray-300 px-4 py-3 text-black">
                     <button
-
-                      className={`p-1 rounded ${servicio.status === 'Approved' ? 'bg-gray-300 cursor-not-allowed' : 'hover:bg-gray-200'}`}
+                      className={`p-1 rounded ${
+                        servicio.status === "Approved"
+                          ? "bg-gray-300 cursor-not-allowed"
+                          : "hover:bg-gray-200"
+                      }`}
                       onClick={() => {
-                        if (servicio.status !== 'Approved') {
+                        if (servicio.status !== "Approved") {
                           navigate(`/student/edit-service/${servicio.id}`);
                         }
                       }}
-                      disabled={servicio.status === 'Approved'}
-                      title={servicio.status === 'Approved' ? 'No puedes modificar un servicio aprobado' : 'Modificar'}
-
-                      className="p-1 hover:bg-gray-200 rounded"
-                      onClick={() =>
-                        navigate(`/student/edit-service/${servicio.id}`)
+                      disabled={servicio.status === "Approved"}
+                      title={
+                        servicio.status === "Approved"
+                          ? "No puedes modificar un servicio aprobado"
+                          : "Modificar"
                       }
-
                     >
                       <svg
                         width="16"
                         height="16"
                         viewBox="0 0 24 24"
                         fill="none"
-                        stroke={servicio.status === 'Approved' ? "#A0A0A0" : "currentColor"}
+                        stroke={
+                          servicio.status === "Approved"
+                            ? "#A0A0A0"
+                            : "currentColor"
+                        }
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className={servicio.status === 'Approved' ? "text-gray-400" : "text-black"}
+                        className={
+                          servicio.status === "Approved"
+                            ? "text-gray-400"
+                            : "text-black"
+                        }
                       >
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                         <path d="m18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
