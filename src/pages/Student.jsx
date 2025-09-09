@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useEffect } from "react";
 import { ServiceTable } from "../components/ServiceTable";
@@ -16,7 +15,8 @@ export default function StudentPortal() {
   const [errorServicios, setErrorServicios] = useState(null);
 
   useEffect(() => {
-    api.get("/auth/profile") 
+    api
+      .get("/auth/profile")
       .then((response) => {
         setStudentData(response.data);
         setLoadingStudent(false);
@@ -26,9 +26,10 @@ export default function StudentPortal() {
         setLoadingStudent(false);
       });
   }, []);
-  
+
   useEffect(() => {
-    api.get("/services")
+    api
+      .get("/services")
       .then((response) => {
         setServicios(response.data);
         setLoadingServicios(false);
@@ -43,17 +44,16 @@ export default function StudentPortal() {
   useEffect(() => {
     if (!loadingStudent && studentData && Array.isArray(servicios)) {
       // Filtrar por el ID del usuario en el objeto user anidado
-      const filtered = servicios.filter(s => s.user && s.user.id === studentData.id);
+      const filtered = servicios.filter(
+        (s) => s.user && s.user.id === studentData.id
+      );
       setUserServicios(filtered);
     }
   }, [loadingStudent, studentData, servicios]);
 
-  const studentName = 
-    `${studentData?.f_name || ''}  ${studentData?.f_lastname || ''} `.trim() || 
+  const studentName =
+    `${studentData?.f_name || ""}  ${studentData?.f_lastname || ""} `.trim() ||
     "Estudiante";
-
-
-
 
   return (
     <div className=" bg-[#f2f3f7]">
@@ -74,7 +74,7 @@ export default function StudentPortal() {
             ) : errorServicios ? (
               <p className="text-red-500">Error al cargar horas de servicio</p>
             ) : (
-              <ServiceTable servicios={userServicios} />
+              <ServiceTable servicios={userServicios} mode={"student"} />
             )}
           </main>
         </>
