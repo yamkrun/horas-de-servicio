@@ -3,7 +3,6 @@ import { FiMenu } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
 import { logOut } from "../libs/axios/auth";
 
-
 export default function Header({ menuOpen, setMenuOpen }) {
   const location = useLocation();
   const isAdmin = location.pathname.includes("/Admin");
@@ -12,11 +11,11 @@ export default function Header({ menuOpen, setMenuOpen }) {
     ...(isAdmin
       ? [
           { label: "Home", href: "#" },
-          { label: "Services", href: "#" },
+          { label: "Services", href: "/services" },
         ]
       : []),
     { label: "Modificar Perfil", href: "/updateprofile" },
-    { label: "Cerrar sesión", href: "/", onClick: () => logOut() }
+    { label: "Cerrar sesión", href: "/", onClick: () => logOut() },
   ];
 
   return (
