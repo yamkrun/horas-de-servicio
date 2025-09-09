@@ -50,18 +50,31 @@ export default function CreateService() {
     setError("");
     setSuccess("");
     try {
-      const formData = new FormData();
-      formData.append("amount_reported", form.amount_reported);
-      formData.append("description", form.description);
-      formData.append("category_id", form.category_id);
       if (form.evidence) {
+        
+        const formData = new FormData();
+        formData.append("amount_reported", form.amount_reported);
+        formData.append("description", form.description);
+        formData.append("category_id", form.category_id);
         formData.append("evidence", form.evidence, form.evidence.name);
+        await api.post("/services", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+      } else {
+        
+        const data = {
+          amount_reported: form.amount_reported,
+          description: form.description,
+          category_id: form.category_id
+        };
+        await api.post("/services", data, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
       }
-      await api.post("/services", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
       setSuccess("Servicio creado exitosamente.");
       setForm({ amount_reported: "", description: "", category_id: "", evidence: null });
     } catch (err) {
