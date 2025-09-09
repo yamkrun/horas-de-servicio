@@ -9,26 +9,21 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
 
   const handleSave = async () => {
     try {
-      // Realizamos la solicitud PATCH para actualizar el servicio
       const res = await api.patch(`/review/${servicio.id}`, {
         status,
         comment,
-        amount_approved: servicio.amount_approved ?? 0, // Aseguramos que amount_approved no sea null
+        amount_approved: servicio.amount_approved ?? 0,
       });
 
-      // Verificamos si la respuesta tiene un código HTTP 2xx
       if (res.status >= 200 && res.status < 300) {
-        // Si la respuesta es exitosa, actualizamos el servicio en el componente padre
         const updatedService = {
           ...servicio,
-          status, // Actualizamos el estado del servicio
-          comment, // Actualizamos el comentario
+          status,
+          comment,
         };
 
-        // Llamamos a `onUpdate` para pasar el servicio actualizado al componente padre
         if (onUpdate) onUpdate(updatedService);
 
-        // Cerramos el modal después de la actualización
         onClose();
       } else {
         alert(
@@ -41,6 +36,7 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
       console.error(err);
     }
   };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-2/3 p-6 max-h-[90vh] overflow-y-auto">
