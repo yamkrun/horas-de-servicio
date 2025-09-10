@@ -89,86 +89,84 @@ export default function CreateService() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50 overflow-y-hidden">
+    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50 overflow-y-auto">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Horas de Servicio"
           src="https://cloningles.estudiantefunval.org/moodle30/pluginfile.php/1/core_admin/logocompact/300x300/1733094194/LOGO%20FUNVAL%20MOODLE.png"
-          className="mx-auto h-10 w-auto"
+          className="mx-auto h-16 w-auto"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
+        <h2 className="mt-8 text-center text-3xl font-extrabold tracking-tight text-gray-900">
           Crear Servicio
         </h2>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Categoría
             </label>
-            <div className="mt-2">
-              <select
-                name="category_id"
-                value={form.category_id}
-                onChange={handleChange}
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                required
-              >
-                <option value="">Selecciona una categoría</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              name="category_id"
+              value={form.category_id}
+              onChange={handleChange}
+              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              required
+            >
+              <option value="">Selecciona una categoría</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Horas reportadas
             </label>
-            <div className="mt-2">
-              <input
-                type="number"
-                name="amount_reported"
-                value={form.amount_reported}
-                onChange={handleChange}
-                placeholder="Ej: 3"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                required
-              />
-            </div>
+            <input
+              type="number"
+              name="amount_reported"
+              value={form.amount_reported}
+              onChange={handleChange}
+              placeholder="Ej: 3"
+              min={1}
+              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              required
+            />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Descripción
             </label>
-            <div className="mt-2">
-              <input
-                type="text"
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                placeholder="Test reporte Horas de servicio"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                required
-              />
-            </div>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Ingrese una descripción del servicio"
+              rows={3}
+              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm resize-none"
+              required
+            />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Evidencia (PDF)
             </label>
-            <div className="mt-2">
-              <input
-                type="file"
-                name="evidence"
-                accept="application/pdf"
-                onChange={handleChange}
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              />
-            </div>
+            <input
+              type="file"
+              name="evidence"
+              accept="application/pdf"
+              onChange={handleChange}
+              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            />
+            {form.evidence && (
+              <p className="text-xs text-gray-500 mt-1">
+                Archivo seleccionado: {form.evidence.name}
+              </p>
+            )}
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           {success && <p className="text-green-500 text-sm">{success}</p>}
@@ -176,9 +174,19 @@ export default function CreateService() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:bg-blue-300"
+              className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:bg-blue-300 transition-colors"
             >
-              {loading ? "Enviando..." : "Agregar Servicio"}
+              {loading ? (
+                <span>
+                  <svg className="animate-spin h-5 w-5 inline-block mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                  </svg>
+                  Enviando...
+                </span>
+              ) : (
+                "Agregar Servicio"
+              )}
             </button>
           </div>
         </form>
