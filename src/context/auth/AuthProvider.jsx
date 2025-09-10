@@ -14,12 +14,15 @@ export function AuthProvider({ children }) {
 
   const checkAuth = async () => {
     try {
-  const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+      const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+      
       if (!token) {
         setLoading(false);
+        navigate('/login');
         return;
       }
       
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const response = await api.get('/auth/profile');
       setUser(response.data);
       
@@ -76,7 +79,8 @@ export function AuthProvider({ children }) {
     loading,
     login,
     logout,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    setUser  // Exponer setUser para poder actualizar el usuario desde otros componentes
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

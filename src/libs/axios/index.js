@@ -6,13 +6,19 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Configurar el header Authorization si el token existe
-const token = localStorage.getItem('token');
-if (token) {
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
-
-
+// Interceptar todas las peticiones para agregar el token de la cookie si existe
+api.interceptors.request.use(
+  function (config) {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(
   function onFulfilled(response) {

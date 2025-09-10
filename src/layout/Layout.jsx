@@ -6,6 +6,7 @@ import StudentsTable from "../components/StudentsTable";
 import { ServiceTable } from "../components/ServiceTable";
 import { api } from "../libs/axios";
 import Dashboard from "../components/Dashboard";
+import Services from "../pages/Services";
 
 export default function Layout({ data }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -88,8 +89,7 @@ export default function Layout({ data }) {
       case "Servicios":
         return (
           <div className="space-y-8">
-            <h2 className="text-2xl font-bold mb-2">Horas de Servicio</h2>
-            <ServiceTable servicios={servicios} mode="admin" />
+            <Services/>
           </div>
         );
       default:
@@ -134,9 +134,7 @@ export default function Layout({ data }) {
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <main className="flex-1 p-6">
           {renderContent()}
-          <Outlet />
-          {/* Si quieres mantener el Outlet para rutas, puedes moverlo aquí o dejarlo fuera */}
-          {/* <Outlet /> */}
+        
         </main>
         <footer className="bg-gray-100 text-gray-800 py-6 mt-auto border-t border-gray-300">
           <div className="container mx-auto px-4 flex justify-end items-center">
