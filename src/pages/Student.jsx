@@ -5,7 +5,6 @@ import { ServiceTable } from "../components/ServiceTable";
 import { api } from "../libs/axios";
 
 export default function StudentPortal() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [loadingStudent, setLoadingStudent] = useState(true);
   const [errorStudent, setErrorStudent] = useState(null);
