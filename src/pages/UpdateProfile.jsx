@@ -71,7 +71,8 @@ export default function UpdateProfile() {
             break;
         }
       }, 1500);
-    } catch (err) {
+    } catch (error) {
+      console.error("Error updating profile:", error);
       setError("Error al actualizar el perfil");
     }
   };
