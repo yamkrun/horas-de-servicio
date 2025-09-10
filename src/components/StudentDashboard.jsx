@@ -25,7 +25,7 @@ export default function StudentDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1. Perfil del estudiante
+        // Perfil del estudiante
         const { data: profile } = await api.get("auth/profile");
         setPerfil({
           nombre:
@@ -36,7 +36,7 @@ export default function StudentDashboard() {
           rol: profile.role?.name || "Estudiante",
         });
 
-        // 2. Reportes de servicio
+        // Reportes de servicio
         const { data: services } = await api.get("services");
         setReportes(
           services.map((s) => ({
@@ -49,7 +49,7 @@ export default function StudentDashboard() {
           }))
         );
 
-        // 3. Calcular métricas
+        // Calcular métricas
         const horasReportadas = services.reduce(
           (acc, s) => acc + (s.amount_reported ?? 0),
           0
@@ -70,7 +70,7 @@ export default function StudentDashboard() {
           rechazadas: horasRechazadas,
         });
 
-        // 4. Notificaciones
+        // Notificaciones
         const notif = [];
         if (services.some((s) => getEstado(s) === "En revisión"))
           notif.push("Tienes un reporte pendiente de revisión.");
@@ -91,7 +91,7 @@ export default function StudentDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* 1. RESUMEN DE HORAS */}
+      {/* RESUMEN DE HORAS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <Cards
           text="Horas reportadas"
@@ -113,7 +113,7 @@ export default function StudentDashboard() {
         />
       </div>
 
-      {/* 4. NOTIFICACIONES */}
+      {/* NOTIFICACIONES */}
       <div className="bg-white shadow rounded-2xl p-4">
         <h3 className="font-semibold mb-4">Avisos y Notificaciones</h3>
         {notificaciones.length === 0 ? (
@@ -129,7 +129,7 @@ export default function StudentDashboard() {
         )}
       </div>
 
-      {/* 3. PERFIL */}
+      {/* PERFIL */}
       {perfil && (
         <div className="bg-white shadow rounded-2xl p-4">
           <h3 className="font-semibold mb-4">Mi Perfil</h3>
@@ -160,7 +160,7 @@ export default function StudentDashboard() {
         </div>
       )}
 
-      {/* 2. REPORTES */}
+      {/* REPORTES */}
       <div className="bg-white shadow rounded-2xl p-4">
         <h3 className="font-semibold mb-4">
           Reportes en Revisión o Rechazados
