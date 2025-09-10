@@ -63,7 +63,6 @@ export default function Layout({ data }) {
     "Servicios",
   ];
 
-  // ...existing code...
   const renderContent = () => {
     switch (selectedOption) {
       case "Administradores":
@@ -104,17 +103,20 @@ export default function Layout({ data }) {
         return (
           <div className="space-y-8">
             <h2 className="text-2xl font-bold mb-2">Home</h2>
-            <Dashboard></Dashboard>
+            <Dashboard
+              admin={admin}
+              students={students}
+              servicios={servicios}
+            ></Dashboard>
           </div>
         );
     }
   };
 
   return (
-    <div className="overflow-y-hidden flex min-h-screen bg-gray-100">
-      {/* Aside menú de opciones */}
-      <aside className="bg-blue-800 w-64 p-4 border-r flex-shrink-0 text-white">
-        <div className="flex flex-col items-center mb-4 bg-gray-200 rounded-lg p-2">
+    <div className="min-h-screen bg-gray-100">
+      <aside className="fixed top-0 left-0 h-full bg-blue-800 w-64 p-4 border-r text-white overflow-y-auto z-50">
+        <div className="sticky top-0 flex flex-col items-center mb-4 bg-gray-200 rounded-lg p-2">
           <img
             src="https://cloningles.estudiantefunval.org/moodle30/pluginfile.php/1/core_admin/logocompact/300x300/1733094194/LOGO%20FUNVAL%20MOODLE.png"
             alt="Logo Funval"
@@ -125,8 +127,8 @@ export default function Layout({ data }) {
           {menuOptions.map((option) => (
             <li key={option}>
               <button
-                className={`w-full text-left px-3 py-2 rounded hover:bg-blue-200 ${
-                  selectedOption === option ? "bg-blue-300 font-semibold" : ""
+                className={`w-full text-left px-3 py-2 rounded hover:bg-blue-700 ${
+                  selectedOption === option ? "bg-blue-600" : ""
                 }`}
                 onClick={() => setSelectedOption(option)}
               >
@@ -137,12 +139,10 @@ export default function Layout({ data }) {
         </ul>
       </aside>
 
-      {/* Contenido principal */}
-      <div className="flex-1 flex flex-col">
+      <div className="ml-64">
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-        <main className="flex-1 p-6">
+        <main className="p-6">
           {renderContent()}
-        
         </main>
         <footer className="bg-gray-100 text-gray-800 py-6 mt-auto border-t border-gray-300">
           <div className="container mx-auto px-4 flex justify-end items-center">
