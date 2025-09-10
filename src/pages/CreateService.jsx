@@ -6,7 +6,7 @@ export default function CreateService() {
     amount_reported: "",
     description: "",
     category_id: "",
-    evidence: null
+    evidence: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -14,8 +14,9 @@ export default function CreateService() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    api.get("/categories")
-      .then(res => setCategories(res.data))
+    api
+      .get("/categories")
+      .then((res) => setCategories(res.data))
       .catch(() => setCategories([]));
   }, []);
 
@@ -51,7 +52,6 @@ export default function CreateService() {
     setSuccess("");
     try {
       if (form.evidence) {
-        
         const formData = new FormData();
         formData.append("amount_reported", form.amount_reported);
         formData.append("description", form.description);
@@ -59,24 +59,28 @@ export default function CreateService() {
         formData.append("evidence", form.evidence, form.evidence.name);
         await api.post("/services", formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         });
       } else {
-        
         const data = {
           amount_reported: form.amount_reported,
           description: form.description,
-          category_id: form.category_id
+          category_id: form.category_id,
         };
         await api.post("/services", data, {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
       }
       setSuccess("Servicio creado exitosamente.");
-      setForm({ amount_reported: "", description: "", category_id: "", evidence: null });
+      setForm({
+        amount_reported: "",
+        description: "",
+        category_id: "",
+        evidence: null,
+      });
     } catch (error) {
       console.error("Error creating service:", error);
       setError("Error al crear el servicio.");
@@ -113,14 +117,16 @@ export default function CreateService() {
               >
                 <option value="">Selecciona una categoría</option>
                 {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
                 ))}
               </select>
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Monto reportado
+              Horas reportadas
             </label>
             <div className="mt-2">
               <input
@@ -180,4 +186,3 @@ export default function CreateService() {
     </div>
   );
 }
-
