@@ -3,36 +3,26 @@ import axios from "axios";
 
 export const api = axios.create({
   baseURL: "https://www.hs-service.api.crealape.com/api/v1/",
-  withCredentials: true,
+  withCredentials: true,  // Importante: permite el envío de cookies
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  }
 });
 
-// Configurar el header Authorization si el token existe
-const token = localStorage.getItem('token');
-if (token) {
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
-
-
-
-axios.interceptors.response.use(
+// Interceptar respuestas para manejar errores de autenticación
+api.interceptors.response.use(
   function onFulfilled(response) {
-    
-    console.log('Cookies después de response:', document.cookie);
     return response;
   },
-  function onRejected(error) {
-    console.log('Response error:', error);
-    console.log('Error status:', error.response?.status);
-    console.log('Error data:', error.response?.data);
-   
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      window.location.pathname !== "/login"
-    ) {
-      window.location.href = "/login";
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      // Si es error de autenticación o autorización, limpiar cookie y redirigir a login
+      document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      if (window.location.pathname !== "/login") {
+        window.location.href = '/login';
+      }
     }
-
     return Promise.reject(error);
   }
 );

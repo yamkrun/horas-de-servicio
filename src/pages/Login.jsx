@@ -2,32 +2,36 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../libs/axios";
 import { logIn } from "../libs/axios/auth";
+import { useAuth } from "../Hooks/useAuth";
 
 export default function Login() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { setUser } = useAuth(); // Obtenemos setUser del contexto
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError("");
-  const formData = new FormData(e.target);
-  const body = Object.fromEntries(formData.entries());
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    
+    try {
+      const formData = new FormData(e.target);
+      const body = Object.fromEntries(formData.entries());
 
-  try {
-    const response = await logIn(body);
+      // Login - la cookie se establece automáticamente
+      await logIn(body);
 
-    if (response.error) {
-      if (response.error.includes("invalid email or password")) {
-        throw new Error("Email o contraseña incorrectos");
-      } else {
-        throw new Error(response.error);
+      // Obtener perfil
+      const profileRes = await api.get("/auth/profile");
+      const profile = profileRes.data;
+      
+      if (!profile) {
+        throw new Error("No se pudo obtener el perfil correctamente.");
       }
-    }
 
-    const profileRes = await api.get("/auth/profile");
-    const profile = profileRes.data;
+      setUser(profile);
+    console.log('Perfil obtenido:', profile);
 
     if (!profile || !profile.role || !profile.role.name) {
       throw new Error("No se pudo obtener el perfil correctamente.");
