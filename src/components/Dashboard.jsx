@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Cards from "./Cards";
 import { PiStudentFill } from "react-icons/pi";
 import { BiSolidSchool } from "react-icons/bi";
@@ -6,37 +6,57 @@ import { BiWorld } from "react-icons/bi";
 import { CiBookmarkCheck } from "react-icons/ci";
 import { TbFileReport } from "react-icons/tb";
 
-export default function Dashboard() {
+export default function Dashboard({
+  schools,
+  country,
+  students,
+  services,
+  categories,
+}) {
+  const [servicesA, setServicesA] = useState(0);
+  const [servicesR, setServicesR] = useState(0);
+
+  useEffect(() => {
+    const approved = services.filter(
+      (service) => service.status === "Approved"
+    );
+    const total = approved.reduce((t, ser) => t + ser.amount_approved, 0);
+    const totalR = services.reduce((to, res) => to + res.amount_reported, 0);
+
+    setServicesR(totalR);
+    setServicesA(total);
+  }, [services]);
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
         <Cards
           text={"Cantidad de estudiantes"}
-          number={80}
+          number={students.length}
           className={"text-blue-500"}
           icon={<PiStudentFill />}
         ></Cards>
         <Cards
           text={"Cantidad de Escuelas"}
-          number={8}
+          number={schools.length}
           className={"text-purple-500"}
           icon={<BiSolidSchool />}
         ></Cards>
         <Cards
           text={"Cantidad de paises"}
-          number={30}
+          number={country.length}
           className={"text-green-500"}
           icon={<BiWorld />}
         ></Cards>
         <Cards
           text={"Horas de servicio aprobadas"}
-          number={80}
+          number={servicesA}
           className={"text-yellow-500"}
           icon={<CiBookmarkCheck />}
         ></Cards>
         <Cards
           text={"Horas de servicio reportadas"}
-          number={80}
+          number={servicesR}
           className={"text-orange-500"}
           icon={<TbFileReport />}
         ></Cards>
@@ -45,44 +65,47 @@ export default function Dashboard() {
         <div className="bg-white shadow rounded-2xl p-2">
           <h3 className="font-semibold mb-4">Categorías de servicio</h3>
           <ul className="space-y-2">
-            <li className="p-2 bg-gray-100 rounded-lg">Voluntariado</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Capacitación</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Eventos</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Eventos</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Eventos</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Eventos</li>
+            {categories.map((n) => (
+              <li key={n.id} className="p-2 bg-gray-100 rounded-lg">
+                {n.name}
+              </li>
+            ))}
           </ul>
         </div>
         <div className="bg-white shadow rounded-2xl p-4">
           <h3 className="font-semibold mb-4">Lista de escuelas</h3>
           <ul className="space-y-2">
-            <li className="p-2 bg-gray-100 rounded-lg">Escuela A</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Escuela B</li>
-            <li className="p-2 bg-gray-100 rounded-lg">Escuela C</li>
+            {schools.map((s) => (
+              <li key={s.id} className="p-2 bg-gray-100 rounded-lg">
+                {s.name}
+              </li>
+            ))}
           </ul>
         </div>
 
         <div className="bg-white shadow rounded-2xl p-4">
           <h3 className="font-semibold mb-4">Estudiantes por escuela</h3>
           <div className="space-y-3">
-            <div>
-              <p className="text-sm">Escuela A</p>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-blue-500 h-3 rounded-full w-[30%]"></div>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm">Escuela B</p>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-green-500 h-3 rounded-full w-[60%]"></div>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm">Escuela C</p>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-purple-500 h-3 rounded-full w-[15%]"></div>
-              </div>
-            </div>
+            {schools.map((s) => {
+              const count = students.filter((st) =>
+                st.schools.some((sc) => sc.id === s.id)
+              ).length;
+              const percent = (count / students.length) * 100;
+
+              return (
+                <div key={s.id}>
+                  <p className="text-sm">
+                    {s.name} — {count} estudiantes
+                  </p>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div
+                      className="bg-blue-500 h-3 rounded-full"
+                      style={{ width: `${percent}%` }}
+                    ></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

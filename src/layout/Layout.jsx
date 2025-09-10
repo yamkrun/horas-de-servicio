@@ -19,7 +19,9 @@ export default function Layout({ data }) {
   const [admin, setAdmin] = useState([]);
   const [students, setStudents] = useState([]);
   const [servicios, setServicios] = useState([]);
-
+  const [schools, setSchools] = useState([]);
+  const [country, setCountry] = useState([]);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     if (!user) {
       navigate('/login');
@@ -34,12 +36,18 @@ export default function Layout({ data }) {
           recruiterRes,
           studentsRes,
           serviciosRes,
+          schoolsRes,
+          countryRes,
+          categoriesRes,
         ] = await Promise.all([
           api.get("/users?r=1"),
           api.get("/users?r=2"),
           api.get("/users?r=3"),
           api.get("/students"),
           api.get("/services"),
+          api.get("/schools"),
+          api.get("/countries"),
+          api.get("/categories"),
         ]);
 
         setAdmin(adminRes.data);
@@ -47,6 +55,9 @@ export default function Layout({ data }) {
         setRecruiter(recruiterRes.data);
         setStudents(studentsRes.data);
         setServicios(serviciosRes.data);
+        setSchools(schoolsRes.data);
+        setCountry(countryRes.data);
+        setCategories(categoriesRes.data);
       } catch (err) {
         console.error("Error cargando datos:", err);
       }
@@ -104,9 +115,13 @@ export default function Layout({ data }) {
           <div className="space-y-8">
             <h2 className="text-2xl font-bold mb-2">Home</h2>
             <Dashboard
-              admin={admin}
+
               students={students}
-              servicios={servicios}
+              services={servicios}
+              schools={schools}
+              country={country}
+              categories={categories}
+
             ></Dashboard>
           </div>
         );
