@@ -19,14 +19,18 @@ export default function Login() {
       const formData = new FormData(e.target);
       const body = Object.fromEntries(formData.entries());
 
+      // Login - la cookie se establece automáticamente
       await logIn(body);
+
+      // Obtener perfil
       const profileRes = await api.get("/auth/profile");
+      const profile = profileRes.data;
       
-      if (!profileRes.data) {
+      if (!profile) {
         throw new Error("No se pudo obtener el perfil correctamente.");
       }
 
-      setUser(profileRes.data);
+      setUser(profile);
     console.log('Perfil obtenido:', profile);
 
     if (!profile || !profile.role || !profile.role.name) {

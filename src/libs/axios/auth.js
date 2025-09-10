@@ -2,7 +2,9 @@ import { api } from ".";
 
 export const logIn = async(body) =>{
     try {
-        return await api.post('/auth/login', body);
+        const response = await api.post('/auth/login', body);
+        // La cookie se establece automáticamente por el servidor
+        return response;
     } catch (error) {
         throw error;
     }

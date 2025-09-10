@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import TableUsers from "../components/TableUsers";
 import StudentsTable from "../components/StudentsTable";
@@ -7,8 +7,11 @@ import { ServiceTable } from "../components/ServiceTable";
 import { api } from "../libs/axios";
 import Dashboard from "../components/Dashboard";
 import Services from "../pages/Services";
+import { useAuth } from "../Hooks/useAuth";
 
 export default function Layout({ data }) {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Opción 1");
   const [recruiter, setRecruiter] = useState([]);
@@ -18,6 +21,11 @@ export default function Layout({ data }) {
   const [servicios, setServicios] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const [
