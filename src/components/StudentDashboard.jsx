@@ -60,7 +60,7 @@ export default function StudentDashboard() {
         );
         const horasRechazadas = services.reduce(
           (acc, s) =>
-            acc + (getEstado(s) === "Rechazado" ? (s.amount_reported ?? 0) : 0),
+            acc + (getEstado(s) === "Rechazado" ? s.amount_reported ?? 0 : 0),
           0
         );
 
@@ -161,7 +161,7 @@ export default function StudentDashboard() {
       )}
 
       {/* REPORTES */}
-      <div className="bg-white shadow rounded-2xl p-4">
+      <div className="bg-white shadow rounded-2xl p-4 my-5">
         <h3 className="font-semibold mb-4">
           Reportes en Revisión o Rechazados
         </h3>
