@@ -6,19 +6,15 @@ export default function StudentProfile() {
   const { id } = useParams();
   const [servicios, setServicios] = useState([]);
   const [student, setStudent] = useState(null);
-  const [loadingServicios, setLoadingServicios] = useState(true);
-  const [errorServicios, setErrorServicios] = useState(null);
 
   useEffect(() => {
     api
       .get("/services")
       .then((response) => {
         setServicios(response.data);
-        setLoadingServicios(false);
       })
       .catch((err) => {
-        setErrorServicios(err);
-        setLoadingServicios(false);
+        console.error("Error loading services:", err);
       });
   }, []);
 

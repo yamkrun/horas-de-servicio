@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const api = axios.create({
   baseURL: "https://www.hs-service.api.crealape.com/api/v1/",
   withCredentials: true,  // Importante: permite el envío de cookies
@@ -9,6 +8,18 @@ export const api = axios.create({
     'Accept': 'application/json',
   }
 });
+
+// Interceptor para agregar el token a todas las solicitudes
+api.interceptors.request.use(
+  (config) => {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Interceptar respuestas para manejar errores de autenticación
 api.interceptors.response.use(

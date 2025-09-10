@@ -77,7 +77,8 @@ export default function CreateService() {
       }
       setSuccess("Servicio creado exitosamente.");
       setForm({ amount_reported: "", description: "", category_id: "", evidence: null });
-    } catch (err) {
+    } catch (error) {
+      console.error("Error creating service:", error);
       setError("Error al crear el servicio.");
     }
     setLoading(false);

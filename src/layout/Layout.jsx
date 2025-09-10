@@ -9,7 +9,7 @@ import Dashboard from "../components/Dashboard";
 import Services from "../pages/Services";
 import { useAuth } from "../Hooks/useAuth";
 
-export default function Layout({ data }) {
+export default function Layout() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
