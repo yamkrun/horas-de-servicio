@@ -1,14 +1,10 @@
 import { api } from ".";
 
-const token = localStorage.getItem('token');
-if (token) {
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
-
- export const logIn = async(body) =>{
+export const logIn = async(body) =>{
     try {
-        const { data, status } = await api.post('/auth/login', body);
-        return { status, data };
+        const response = await api.post('/auth/login', body);
+        // La cookie se establece automáticamente por el servidor
+        return response;
     } catch (error) {
         throw error;
     }
