@@ -60,12 +60,6 @@ export default function UpdateProfile() {
           case 2:
             navigate("/student");
             break;
-          case 3:
-            navigate("/recruiter");
-            break;
-          case 4:
-            navigate("/controller");
-            break;
           default:
             navigate("/");
             break;

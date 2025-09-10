@@ -18,12 +18,15 @@ export default function Login() {
   // Redirigir si ya hay un usuario autenticado
   useEffect(() => {
     if (user && !authLoading) {
-      console.log("User is authenticated, redirecting based on role:", user.role?.name);
-      
-      if (user.role?.name === 'Student') {
-        navigate('/student', { replace: true });
-      } else if (user.role?.name === 'Admin') {
-        navigate('/admin', { replace: true });
+      console.log(
+        "User is authenticated, redirecting based on role:",
+        user.role?.name
+      );
+
+      if (user.role?.name === "Student") {
+        navigate("/student", { replace: true });
+      } else if (user.role?.name === "Admin") {
+        navigate("/admin", { replace: true });
       }
     }
   }, [user, authLoading, navigate]);
@@ -35,27 +38,27 @@ export default function Login() {
 
     try {
       const formData = new FormData(e.target);
-      const email = formData.get('email');
-      const password = formData.get('password');
+      const email = formData.get("email");
+      const password = formData.get("password");
 
-      console.log('Attempting login with:', email);
+      console.log("Attempting login with:", email);
       const result = await login(email, password);
-      console.log('Login result:', result);
+      console.log("Login result:", result);
 
       if (result.success && result.user) {
-        console.log('Login successful, user role:', result.user.role?.name);
-        
+        console.log("Login successful, user role:", result.user.role?.name);
+
         // Forzar redirección basada en el rol
-        if (result.user.role?.name === 'Student') {
-          navigate('/student', { replace: true });
-        } else if (result.user.role?.name === 'Admin') {
-          navigate('/admin', { replace: true });
+        if (result.user.role?.name === "Student") {
+          navigate("/student", { replace: true });
+        } else if (result.user.role?.name === "Admin") {
+          navigate("/admin", { replace: true });
         }
       } else {
         throw new Error(result.error || "Error al iniciar sesión");
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       if (error.response && error.response.status === 401) {
         setError("Email o contraseña incorrectos");
       } else {
@@ -93,7 +96,10 @@ export default function Login() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-900"
+            >
               Email
             </label>
             <div className="mt-2">
@@ -110,7 +116,10 @@ export default function Login() {
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-900"
+              >
                 Contraseña
               </label>
             </div>
@@ -127,9 +136,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <div className="text-red-600 text-sm text-center">
-              {error}
-            </div>
+            <div className="text-red-600 text-sm text-center">{error}</div>
           )}
 
           <div>
@@ -140,15 +147,6 @@ export default function Login() {
             >
               {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
             </button>
-            
-            <div className="mt-4 text-center">
-              <a 
-                href="/simple-admin" 
-                className="text-blue-600 hover:underline"
-              >
-                Ir a Simple Admin (Para pruebas)
-              </a>
-            </div>
           </div>
         </form>
       </div>
