@@ -18,9 +18,9 @@ export default function StudentProfile() {
       });
   }, []);
 
-  const serviciosDelEstudiante = servicios.filter(
-    (s) => s.user?.id === student.id
-  );
+  // const serviciosDelEstudiante = servicios.filter(
+  //   (s) => s.user?.id === student.id
+  // );
 
   useEffect(() => {
     const fetchStudent = async () => {
@@ -35,6 +35,10 @@ export default function StudentProfile() {
   }, [id]);
 
   if (!student) return <div>Cargando...</div>;
+
+  const serviciosDelEstudiante = servicios.filter(
+    (s) => s.user?.id === student.id
+  );
 
   // Calcular horas aprobadas
   const totalApproved = student.services?.reduce(
