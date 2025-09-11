@@ -19,9 +19,9 @@ export default function AdminSidebar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="bg-blue-800 text-white w-64 min-h-screen p-4">
+    <aside className="bg-blue-800 text-white w-64 min-h-screen p-4 fixed left-0 top-0 overflow-y-auto">
       <div className="mb-8">
-        <h2 className="text-xl font-bold">Panel de Administración</h2>
+        <h2 className="text-4xl font-bold text-center">Funval</h2>
       </div>
 
       <nav className="space-y-2">

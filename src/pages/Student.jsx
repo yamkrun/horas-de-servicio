@@ -53,7 +53,7 @@ export default function StudentPortal() {
   }, [loadingStudent, studentData, servicios]);
 
   const studentName =
-    `${studentData?.f_name || ""}  ${studentData?.f_lastname || ""} `.trim() ||
+    `${studentData?.f_name || ""} `.trim() ||
     "Estudiante";
 
   return (

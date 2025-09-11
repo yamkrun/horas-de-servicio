@@ -11,9 +11,9 @@ export default function StudentSidebar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="bg-blue-800 text-white w-64 min-h-screen p-4">
+    <aside className="bg-blue-800 text-white w-64 h-screen p-4 fixed left-0 top-0 overflow-y-auto">
       <div className="mb-8 text-center">
-        <h2 className="text-xl font-bold border-b border-blue-700 pb-4">Portal de Estudiante</h2>
+        <h2 className="text-4xl font-bold border-b border-blue-700 pb-4">Funval</h2>
         {user && (
           <div className="mt-4 mb-6">
             <div className="w-20 h-20 rounded-full bg-blue-600 mx-auto flex items-center justify-center">
