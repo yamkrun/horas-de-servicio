@@ -8,7 +8,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const { changePassword } = useAuth();
 
   const handleCurrentPasswordChange = (e) => {
@@ -27,38 +27,40 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     e.preventDefault();
     setError("");
     setSuccess("");
-    
+
     // Validar que las contraseñas coincidan
     if (newPassword !== confirmPassword) {
       setError("Las contraseñas nuevas no coinciden");
       return;
     }
-    
+
     // Validar que la contraseña tenga al menos 6 caracteres
     if (newPassword.length < 6) {
       setError("La contraseña debe tener al menos 6 caracteres");
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       const result = await changePassword(currentPassword, newPassword);
-      
+
       if (result.success) {
         setSuccess(result.message || "Contraseña actualizada correctamente");
         // Limpiar los campos
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
-        
+
         // Cerrar el modal después de 2 segundos
         setTimeout(() => {
           onClose();
           setSuccess("");
         }, 2000);
       } else {
-        setError(result.error || "Error al cambiar la contraseña. Intente nuevamente.");
+        setError(
+          result.error || "Error al cambiar la contraseña. Intente nuevamente."
+        );
       }
     } catch (error) {
       setError("Error en el servidor. Intente nuevamente más tarde.");
@@ -76,37 +78,39 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
   };
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/50  flex items-center justify-center z-50"
+    <div
+      className="fixed inset-0 bg-black/50  w-screen flex items-center justify-center z-50"
       onClick={handleBackdropClick}
     >
       <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-800">Cambiar Contraseña</h2>
-          <button 
+          <h2 className="text-xl font-bold text-gray-800">
+            Cambiar Contraseña
+          </h2>
+          <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
             ✕
           </button>
         </div>
-        
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
-        
+
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
             {success}
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label 
-              htmlFor="currentPassword" 
+            <label
+              htmlFor="currentPassword"
               className="block text-gray-700 font-medium mb-2"
             >
               Contraseña Actual
@@ -123,10 +127,10 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
               autoComplete="current-password"
             />
           </div>
-          
+
           <div className="mb-4">
-            <label 
-              htmlFor="newPassword" 
+            <label
+              htmlFor="newPassword"
               className="block text-gray-700 font-medium mb-2"
             >
               Nueva Contraseña
@@ -144,10 +148,10 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
               autoComplete="new-password"
             />
           </div>
-          
+
           <div className="mb-6">
-            <label 
-              htmlFor="confirmPassword" 
+            <label
+              htmlFor="confirmPassword"
               className="block text-gray-700 font-medium mb-2"
             >
               Confirmar Nueva Contraseña
@@ -164,7 +168,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
               autoComplete="new-password"
             />
           </div>
-          
+
           <div className="flex justify-end">
             <button
               type="button"
