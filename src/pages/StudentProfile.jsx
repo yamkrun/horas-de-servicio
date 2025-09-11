@@ -1,144 +1,183 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { AiOutlineEye, AiOutlineFilePdf } from "react-icons/ai";
+import { FaCheckCircle } from "react-icons/fa";
+import ModalServices from "./ModalServices";
 import { api } from "../libs/axios";
-import { ServiceTable } from "../components/ServiceTable";
-import { useParams } from "react-router-dom";
-export default function StudentProfile() {
-  const { id } = useParams();
-  const [servicios, setServicios] = useState([]);
-  const [student, setStudent] = useState(null);
 
-  useEffect(() => {
-    api
-      .get("/services")
-      .then((response) => {
-        setServicios(response.data);
-      })
-      .catch((err) => {
-        console.error("Error loading services:", err);
-      });
-  }, []);
+export function ServiceTable({ servicios = [], mode = "student" }) {
+  const [selectedService, setSelectedService] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [servicesList, setServicesList] = useState(servicios || []);
+  const [error, setError] = useState(null);
 
-  const serviciosDelEstudiante = servicios.filter(
-    (s) => s.user?.id === student.id
-  );
+  const handleOpenModal = (servicio) => {
+    setSelectedService(servicio);
+    setShowModal(true);
+  };
 
-  useEffect(() => {
-    const fetchStudent = async () => {
-      try {
-        const res = await api.get(`/students/${id}`);
-        setStudent(res.data);
-      } catch (err) {
-        console.error("Error cargando estudiante:", err);
-      }
-    };
-    fetchStudent();
-  }, [id]);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedService(null);
+  };
 
-  if (!student) return <div>Cargando...</div>;
-
-  // Calcular horas aprobadas
-  const totalApproved = student.services?.reduce(
-    (acc, s) => acc + (s.amount_approved || 0),
-    0
-  );
-  const percentage = Math.min(100, (totalApproved / 20) * 100);
+  const handleUpdateService = async (updatedService) => {
+    try {
+      await api.put(`/services/${updatedService.id}`, updatedService);
+      setServicesList((prev) =>
+        prev.map((s) => (s.id === updatedService.id ? updatedService : s))
+      );
+    } catch (err) {
+      console.error("Error al actualizar servicio:", err);
+      setError("No se pudo actualizar el servicio.");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#f2f3f7] flex flex-col items-center justify-start p-4">
-      <div className="bg-[#ffffff] rounded-md  max-w-6xl w-full p-6 md:p-12 flex flex-col md:flex-row gap-8 mb-8">
-        <div className="flex-1 p-6 rounded-md border-gray-200 border-2">
-          <h1 className="text-3xl font-bold text-blue-800 mb-6 text-center md:text-left">
-            Datos del Estudiante
-          </h1>
-          <div className="space-y-4">
-            <div>
-              <h2 className="font-semibold">Nombre completo</h2>
-              <p className="text-gray-700">{student.full_name}</p>
-            </div>
-            <div>
-              <h2 className=" font-semibold">Nacionalidad</h2>
-              <p className="text-gray-700">{student.student?.country?.name}</p>
-            </div>
-            <div>
-              <h2 className=" font-semibold">Escuela</h2>
-              <p className="text-gray-700">
-                {student.schools?.[0]?.name || "Sin escuela"}
-              </p>
-            </div>
-            <div>
-              <h2 className=" font-semibold">Teléfono</h2>
-              <p className="text-gray-700">{student.phone}</p>
-            </div>
-            <div>
-              <h2 className=" font-semibold">Email</h2>
-              <p className="text-gray-700">{student.email}</p>
-            </div>
-            <div>
-              <h2 className=" font-semibold">Estatus</h2>
-              <p className="text-gray-700">{student.status}</p>
-            </div>
+    <div className="overflow-x-auto p-6">
+      {error && <p className="m-4 text-red-500">{error}</p>}
 
-            <div className="mt-6">
-              <h2 className=" font-semibold mb-2">
-                Horas de Servicio: {totalApproved} / 20
-              </h2>
-              <div className="w-full h-4 bg-blue-200 rounded-full">
-                <div
-                  className="h-4 bg-blue-600 rounded-full transition-all duration-500"
-                  style={{ width: `${percentage}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <table className="w-full border-collapse border border-gray-300 text-center">
+        <thead>
+          <tr className="bg-gray-400">
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              ID
+            </th>
+            {mode !== "student" && (
+              <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+                Estudiante
+              </th>
+            )}
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              Categoría
+            </th>
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              Horas reportadas
+            </th>
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              Horas aprobadas
+            </th>
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              Fecha
+            </th>
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              Status
+            </th>
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              Evidencia
+            </th>
+            <th className="border border-gray-300 px-4 py-3 text-black font-medium">
+              {mode === "student" ? "Detalles" : "Aprobar"}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {servicesList.length === 0 ? (
+            <tr>
+              <td
+                colSpan={mode === "student" ? 8 : 9}
+                className="border border-gray-300 px-4 py-3 text-black"
+              >
+                No hay servicios registrados
+              </td>
+            </tr>
+          ) : (
+            servicesList.map((servicio) => (
+              <tr key={servicio.id} className="hover:bg-gray-200">
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {servicio.id}
+                </td>
+                {mode !== "student" && (
+                  <td className="border border-gray-300 px-4 py-3 text-black">
+                    {servicio.user?.full_name || "Sin asignar"}
+                  </td>
+                )}
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {servicio.category?.name || "Sin categoría"}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {servicio.amount_reported || 0}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {servicio.amount_approved || 0}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {servicio.created_at
+                    ? new Date(servicio.created_at).toLocaleDateString()
+                    : "-"}
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  <span
+                    className={`px-2 py-1 rounded text-sm ${
+                      servicio.status === "Approved"
+                        ? "bg-green-300 text-black"
+                        : servicio.status === "Pending"
+                          ? "bg-yellow-300 text-black"
+                          : servicio.status === "Rejected"
+                            ? "bg-red-400 text-black"
+                            : "bg-gray-300 text-black"
+                    }`}
+                  >
+                    {servicio.status}
+                  </span>
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `${import.meta.env.VITE_API_URL}/evidence/${servicio.id}`,
+                        "_blank"
+                      )
+                    }
+                    className="text-red-600 hover:text-red-800 cursor-pointer"
+                    title="Ver PDF"
+                  >
+                    <AiOutlineFilePdf size={22} />
+                  </button>
+                </td>
+                <td className="border border-gray-300 px-4 py-3 text-black">
+                  {mode === "student" ? (
+                    <button
+                      className="p-2 hover:bg-gray-200 rounded cursor-pointer"
+                      onClick={() => handleOpenModal(servicio)}
+                      title="Ver detalles"
+                    >
+                      <AiOutlineEye size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className={`text-2xl ${
+                        servicio.status === "Approved"
+                          ? "text-green-700 cursor-not-allowed"
+                          : "text-blue-600 hover:text-blue-800"
+                      }`}
+                      onClick={() =>
+                        servicio.status !== "Approved" &&
+                        handleOpenModal(servicio)
+                      }
+                      disabled={servicio.status === "Approved"}
+                      title={
+                        servicio.status === "Approved"
+                          ? "Servicio ya aprobado"
+                          : "Aprobar servicio"
+                      }
+                    >
+                      <FaCheckCircle />
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
 
-        <div className="flex-1 flex flex-col gap-6">
-          <h1 className="text-3xl font-bold text-blue-800 mb-4 text-center md:text-left">
-            Responsables
-          </h1>
-
-          <div className="p-6 rounded-md border-2 border-gray-200">
-            <h2 className="text-blue-700 font-semibold mb-2">Controller</h2>
-            <p className="text-gray-700">
-              <span className="font-semibold">Nombre:</span>{" "}
-              {student.student?.controller?.full_name}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Teléfono:</span>{" "}
-              {student.student?.controller?.phone}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Email:</span>{" "}
-              {student.student?.controller?.email}
-            </p>
-          </div>
-
-          <div className="p-6 rounded-md border-2 border-gray-200">
-            <h2 className="text-blue-700 font-semibold mb-2">Recruiter</h2>
-            <p className="text-gray-700">
-              <span className="font-semibold">Nombre:</span>{" "}
-              {student.student?.recruiter?.full_name}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Teléfono:</span>{" "}
-              {student.student?.recruiter?.phone}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Email:</span>{" "}
-              {student.student?.recruiter?.email}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-lg max-w-6xl w-full p-6 md:p-12">
-        <h2 className="text-2xl font-bold text-blue-800 mb-6">
-          Horas de Servicio
-        </h2>
-        <div className="overflow-x-auto">
-          <ServiceTable servicios={serviciosDelEstudiante} mode={"admin"} />
-        </div>
-      </div>
+      {showModal && selectedService && (
+        <ModalServices
+          servicio={selectedService}
+          onClose={handleCloseModal}
+          onUpdate={handleUpdateService}
+        />
+      )}
     </div>
   );
 }
