@@ -8,22 +8,54 @@ export default function UpdateProfile() {
     s_name: "",
     f_lastname: "",
     s_lastname: "",
+    phone: "",
+    email: "",
+    country_id: "",
     id: null,
     role_id: null,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [countries, setCountries] = useState([]);
 
   const navigate = useNavigate();
+
+  // Función para cargar países
+  const loadCountries = async () => {
+    try {
+      const response = await api.get("/countries");
+      setCountries(response.data);
+    } catch (error) {
+      console.error("Error cargando países:", error);
+      setError("Error al cargar la lista de países");
+    }
+  };
 
   useEffect(() => {
     api
       .get("/auth/profile")
       .then((res) => {
-        const { f_name, s_name, f_lastname, s_lastname, id, role_id } =
+        const { f_name, s_name, f_lastname, s_lastname, id, role_id, phone, email, student } =
           res.data;
-        setFormData({ f_name, s_name, f_lastname, s_lastname, id, role_id });
+        
+        // Extraer country_id del objeto student si existe
+        const country_id = student?.country_id || "";
+        
+        setFormData({ 
+          f_name, 
+          s_name, 
+          f_lastname, 
+          s_lastname, 
+          phone, 
+          email, 
+          id, 
+          role_id 
+        });
+        
+        // Cargar países para el selector
+        loadCountries();
+        
         setLoading(false);
       })
       .catch(() => {
@@ -43,12 +75,25 @@ export default function UpdateProfile() {
     setSuccess(null);
 
     try {
-      await api.put(`/users/${formData.id}`, {
+      // Asegurarse de que country_id sea un número si existe
+      const payload = {
         f_name: formData.f_name,
         s_name: formData.s_name,
         f_lastname: formData.f_lastname,
         s_lastname: formData.s_lastname,
-      });
+        phone: formData.phone,
+        email: formData.email,
+      };
+      
+      // Solo incluir country_id si tiene valor
+      if (formData.country_id) {
+        payload.country_id = parseInt(formData.country_id, 10);
+      }
+      
+      // Mostrar datos que se envían al servidor
+      console.log("Datos enviados para actualización:", payload);
+      
+      await api.put(`/users/${formData.id}`, payload);
 
       setSuccess("Perfil actualizado correctamente");
 
@@ -127,6 +172,30 @@ export default function UpdateProfile() {
             className="w-full border p-2 rounded-md"
           />
         </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Teléfono</label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone || ""}
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Correo Electrónico</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email || ""}
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        
 
         <button
           type="submit"
