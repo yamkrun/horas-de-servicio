@@ -177,7 +177,7 @@ export default function Admin() {
       
       {/* Contenido según la sección activa */}
       {activeSection === "dashboard" && (
-        <div className="p-4 bg-white rounded-lg shadow">
+        <div className="p-4">
           {/* Wait for all data to be loaded before rendering Dashboard */}
           {students && services && schools && country && categories ? (
             <Dashboard 
@@ -198,10 +198,10 @@ export default function Admin() {
       
       {/* Sección de Administradores */}
       {activeSection === "admin" && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className=" p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <FiChevronDown /> Administradores
+            <h2 className="text-xl font-bold flex items-center gap-2 ml-8">
+               Administradores
             </h2>
           </div>
           <TableUsers data={filterData(admin, searchTerm)} filterRole={"Admin"} />
@@ -210,10 +210,10 @@ export default function Admin() {
       
       {/* Sección de Controladores */}
       {activeSection === "controllers" && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className=" p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <FiChevronDown /> Controladores
+            <h2 className="text-xl font-bold flex items-center ml-8 gap-2">
+              Controladores
             </h2>
           </div>
           <TableUsers data={filterData(controllers, searchTerm)} filterRole={"Controller"} />
@@ -222,11 +222,9 @@ export default function Admin() {
       
       {/* Sección de Reclutadores */}
       {activeSection === "recruiters" && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="  p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <FiChevronDown /> Reclutadores
-            </h2>
+            
           </div>
           <TableUsers data={filterData(recruiter, searchTerm)} filterRole={"Recruiter"} />
         </div>
@@ -234,10 +232,10 @@ export default function Admin() {
       
       {/* Sección de Estudiantes */}
       {activeSection === "students" && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <FiChevronDown /> Estudiantes
+            <h2 className="text-xl font-bold ml-8 flex items-center gap-2">
+             Estudiantes
             </h2>
             <button
               onClick={handleAddStudent}
