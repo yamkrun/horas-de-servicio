@@ -211,11 +211,6 @@ export default function Admin() {
       {/* Sección de Administradores */}
       {activeSection === "admin" && (
         <div className=" p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2 ml-8">
-               Administradores
-            </h2>
-          </div>
           <TableUsers
             data={filterData(admin, searchTerm)}
             filterRole={"Admin"}
@@ -226,11 +221,6 @@ export default function Admin() {
       {/* Sección de Controladores */}
       {activeSection === "controllers" && (
         <div className=" p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center ml-8 gap-2">
-              Controladores
-            </h2>
-          </div>
           <TableUsers
             data={filterData(controllers, searchTerm)}
             filterRole={"Controller"}
@@ -241,9 +231,6 @@ export default function Admin() {
       {/* Sección de Reclutadores */}
       {activeSection === "recruiters" && (
         <div className="  p-6">
-          <div className="flex justify-between items-center mb-4">
-            
-          </div>
           <TableUsers
             data={filterData(recruiter, searchTerm)}
             filterRole={"Recruiter"}
@@ -254,10 +241,7 @@ export default function Admin() {
       {/* Sección de Estudiantes */}
       {activeSection === "students" && (
         <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold ml-8 flex items-center gap-2">
-             Estudiantes
-            </h2>
+          <div className="flex justify-end items-center mb-4">
             <button
               onClick={handleAddStudent}
               className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
@@ -266,42 +250,6 @@ export default function Admin() {
             </button>
           </div>
           <StudentsTable data={filterData(students, searchTerm)} />
-        </div>
-      )}
-
-      {/* Sección de Categorías */}
-      {activeSection === "categories" && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <FiChevronDown /> Categorías de Servicio
-            </h2>
-            <button className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
-              <FiPlus /> Nueva Categoría
-            </button>
-          </div>
-
-          {categories && categories.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  className="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200"
-                >
-                  <h3 className="font-semibold text-lg mb-2">
-                    {category.name}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {category.description || "Sin descripción"}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-gray-500 py-4">
-              No hay categorías disponibles
-            </p>
-          )}
         </div>
       )}
     </div>

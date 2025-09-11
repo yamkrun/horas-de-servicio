@@ -22,12 +22,13 @@ export default function AdminSidebar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="bg-blue-800 text-white w-64 min-h-screen p-4 fixed left-0 top-0 overflow-y-auto">
+    <aside className="bg-blue-800 text-white w-64 min-h-screen p-4 fixed lg:sticky lg:top-0 left-0 overflow-y-auto">
       <div className="mb-8">
         <h2 className="text-4xl font-bold text-center">Funval</h2>
       </div>
 
       <nav className="space-y-2">
+        {/* Dashboard */}
         <Link
           to="/admin"
           className={`flex items-center py-2.5 px-4 rounded transition ${
@@ -37,6 +38,7 @@ export default function AdminSidebar() {
           <FiHome className="mr-3" /> Dashboard
         </Link>
 
+        {/* Gestión de Usuarios */}
         <div className="py-1 border-t border-blue-700 my-2"></div>
         <p className="text-xs text-blue-300 px-4 py-1 uppercase font-semibold">
           Gestión de Usuarios
@@ -86,6 +88,7 @@ export default function AdminSidebar() {
           <FiUsers className="mr-3" /> Estudiantes
         </Link>
 
+        {/* Servicios */}
         <div className="py-1 border-t border-blue-700 my-2"></div>
         <p className="text-xs text-blue-300 px-4 py-1 uppercase font-semibold">
           Servicios
@@ -100,8 +103,8 @@ export default function AdminSidebar() {
           <FiList className="mr-3" /> Todos los Servicios
         </Link>
 
+        {/* Logout */}
         <div className="py-1 border-t border-blue-700 my-2"></div>
-
         <button
           onClick={() => setShowPasswordModal(true)}
           className="w-full text-left flex items-center py-2.5 px-4 rounded transition hover:bg-blue-700"

@@ -161,7 +161,7 @@ export default function StudentDashboard() {
       )}
 
       {/* REPORTES */}
-      <div className="bg-white shadow rounded-2xl p-4 my-5">
+      <div className="bg-white shadow rounded-2xl p-4 my-5 overflow-x-auto">
         <h3 className="font-semibold mb-4">
           Reportes en Revisión o Rechazados
         </h3>
