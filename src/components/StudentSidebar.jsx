@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../Hooks/useAuth";
-import { FiHome, FiPlusCircle, FiUser, FiLogOut } from "react-icons/fi";
+import { FiHome, FiPlusCircle, FiUser, FiLogOut, FiKey } from "react-icons/fi";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 export default function StudentSidebar() {
   const location = useLocation();
   const { logout, user } = useAuth();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   // Verifica si la ruta actual coincide con el enlace
   const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="bg-blue-800 text-white w-64 min-h-screen p-4">
+    <aside className="bg-blue-800 text-white w-64 h-screen p-4 fixed left-0 top-0 overflow-y-auto">
       <div className="mb-8 text-center">
-        <h2 className="text-xl font-bold border-b border-blue-700 pb-4">Portal de Estudiante</h2>
+        <h2 className="text-4xl font-bold border-b border-blue-700 pb-4">Funval</h2>
         {user && (
           <div className="mt-4 mb-6">
             <div className="w-20 h-20 rounded-full bg-blue-600 mx-auto flex items-center justify-center">
@@ -61,6 +63,14 @@ export default function StudentSidebar() {
         <div className="py-2 border-t border-blue-700 my-4"></div>
         
         <button
+          onClick={() => setShowPasswordModal(true)}
+          className="w-full flex items-center text-left py-2.5 px-4 rounded transition hover:bg-blue-700"
+        >
+          <FiKey className="mr-3" />
+          Cambiar Contraseña
+        </button>
+        
+        <button
           onClick={logout}
           className="w-full flex items-center text-left py-2.5 px-4 rounded transition hover:bg-blue-700"
         >
@@ -68,6 +78,12 @@ export default function StudentSidebar() {
           Cerrar Sesión
         </button>
       </nav>
+      
+      {/* Modal para cambio de contraseña */}
+      <ChangePasswordModal 
+        isOpen={showPasswordModal} 
+        onClose={() => setShowPasswordModal(false)} 
+      />
     </aside>
   );
 }

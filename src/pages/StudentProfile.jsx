@@ -18,15 +18,17 @@ export default function StudentProfile() {
       });
   }, []);
 
-  const serviciosDelEstudiante = servicios.filter(
-    (s) => s.user?.id === student.id
-  );
+  // const serviciosDelEstudiante = servicios.filter(
+  //   (s) => s.user?.id === student.id
+  // );
 
   useEffect(() => {
     const fetchStudent = async () => {
       try {
         const res = await api.get(`/students/${id}`);
         setStudent(res.data);
+        // Registrar en consola para depuración
+        console.log("Datos del estudiante cargados:", res.data);
       } catch (err) {
         console.error("Error cargando estudiante:", err);
       }
@@ -35,6 +37,10 @@ export default function StudentProfile() {
   }, [id]);
 
   if (!student) return <div>Cargando...</div>;
+
+  const serviciosDelEstudiante = servicios.filter(
+    (s) => s.user?.id === student.id
+  );
 
   // Calcular horas aprobadas
   const totalApproved = student.services?.reduce(
@@ -57,7 +63,7 @@ export default function StudentProfile() {
             </div>
             <div>
               <h2 className=" font-semibold">Nacionalidad</h2>
-              <p className="text-gray-700">{student.student?.country?.name}</p>
+              <p className="text-gray-700">{student.student?.country?.name || "No especificada"}</p>
             </div>
             <div>
               <h2 className=" font-semibold">Escuela</h2>
@@ -67,11 +73,11 @@ export default function StudentProfile() {
             </div>
             <div>
               <h2 className=" font-semibold">Teléfono</h2>
-              <p className="text-gray-700">{student.phone}</p>
+              <p className="text-gray-700">{student.phone || "No especificado"}</p>
             </div>
             <div>
               <h2 className=" font-semibold">Email</h2>
-              <p className="text-gray-700">{student.email}</p>
+              <p className="text-gray-700">{student.email || "No especificado"}</p>
             </div>
             <div>
               <h2 className=" font-semibold">Estatus</h2>

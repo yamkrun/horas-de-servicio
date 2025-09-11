@@ -53,7 +53,7 @@ export default function StudentPortal() {
   }, [loadingStudent, studentData, servicios]);
 
   const studentName =
-    `${studentData?.f_name || ""}  ${studentData?.f_lastname || ""} `.trim() ||
+    `${studentData?.f_name || ""} `.trim() ||
     "Estudiante";
 
   return (
@@ -73,13 +73,7 @@ export default function StudentPortal() {
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
               Bienvenido, {studentName}
             </h2>
-            <Link 
-              to="/student/create-service"
-              className="flex items-center bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-md shadow transition-colors"
-            >
-              <FiPlus className="mr-2" />
-              Nuevo Servicio
-            </Link>
+            
           </div>
           
           {loadingServicios ? (
@@ -99,6 +93,7 @@ export default function StudentPortal() {
                   <h3 className="text-xl font-semibold text-blue-800">Mis Horas de Servicio</h3>
                 </div>
                 <div className="p-4">
+              
                   <ServiceTable servicios={userServicios} mode={"student"} />
                 </div>
               </div>

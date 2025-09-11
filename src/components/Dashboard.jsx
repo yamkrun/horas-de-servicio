@@ -13,7 +13,6 @@ export default function Dashboard({
   services = [],
   categories = [],
 }) {
-  console.log("Dashboard props:", { schools, country, students, services, categories });
   const [servicesA, setServicesA] = useState(0);
   const [servicesR, setServicesR] = useState(0);
 
@@ -102,10 +101,14 @@ export default function Dashboard({
           {schools && schools.length > 0 && students && students.length > 0 ? (
             <div className="space-y-3">
               {schools.map((s) => {
-                const count = students.filter((st) =>
-                  st.schools && st.schools.some && st.schools.some((sc) => sc && sc.id === s.id)
+                const count = students.filter(
+                  (st) =>
+                    st.schools &&
+                    st.schools.some &&
+                    st.schools.some((sc) => sc && sc.id === s.id)
                 ).length;
-                const percent = students.length > 0 ? (count / students.length) * 100 : 0;
+                const percent =
+                  students.length > 0 ? (count / students.length) * 100 : 0;
 
                 return (
                   <div key={s.id}>
@@ -123,7 +126,9 @@ export default function Dashboard({
               })}
             </div>
           ) : (
-            <p className="text-gray-500">No hay datos disponibles para mostrar</p>
+            <p className="text-gray-500">
+              No hay datos disponibles para mostrar
+            </p>
           )}
         </div>
       </div>

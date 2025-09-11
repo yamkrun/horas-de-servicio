@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 import { api } from '../../libs/axios';
+import axios from 'axios';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -91,11 +92,37 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      const response = await api.put('/auth/change-password', {
+        old_password: currentPassword,
+        new_password: newPassword
+      });
+      
+      return { success: true, message: response.data.message || "Contraseña actualizada con éxito" };
+    } catch (error) {
+      // Manejo simplificado de errores
+      if (error.response && error.response.status === 401) {
+        // Si es error de autenticación, solo devolvemos el error sin limpiar token ni redirigir
+        return {
+          success: false,
+          error: 'Error de autenticación. La contraseña actual podría ser incorrecta.'
+        };
+      }
+      
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Error al cambiar la contraseña'
+      };
+    }
+  };
+
   const value = {
     user,
     loading,
     login,
     logout,
+    changePassword,
     isAuthenticated: !!user,
     setUser
   };
