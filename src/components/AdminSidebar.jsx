@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../Hooks/useAuth";
 import {
@@ -9,11 +9,14 @@ import {
   FiUserPlus,
   FiList,
   FiLogOut,
+  FiKey,
 } from "react-icons/fi";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 export default function AdminSidebar() {
   const location = useLocation();
   const { logout } = useAuth();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   // Verifica si la ruta actual coincide con el enlace
   const isActive = (path) => location.pathname === path;
@@ -100,12 +103,25 @@ export default function AdminSidebar() {
         <div className="py-1 border-t border-blue-700 my-2"></div>
 
         <button
+          onClick={() => setShowPasswordModal(true)}
+          className="w-full text-left flex items-center py-2.5 px-4 rounded transition hover:bg-blue-700"
+        >
+          <FiKey className="mr-3" /> Cambiar Contraseña
+        </button>
+
+        <button
           onClick={logout}
           className="w-full text-left flex items-center py-2.5 px-4 rounded transition hover:bg-blue-700"
         >
           <FiLogOut className="mr-3" /> Cerrar Sesión
         </button>
       </nav>
+      
+      {/* Modal para cambio de contraseña */}
+      <ChangePasswordModal 
+        isOpen={showPasswordModal} 
+        onClose={() => setShowPasswordModal(false)} 
+      />
     </aside>
   );
 }
