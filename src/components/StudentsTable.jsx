@@ -6,7 +6,7 @@ export default function StudentsTable({ data = [] }) {
 
   return (
     <div className="overflow-x-auto p-6">
-      <table className=" w-full border-collapse border border-gray-300 text-center">
+      <table className=" min-w-full border-collapse border border-gray-300 text-center">
         <thead>
           <tr className="bg-gray-400">
             <th className="border border-gray-300 px-2 py-3  text-black font-medium">
