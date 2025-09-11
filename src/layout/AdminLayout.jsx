@@ -2,9 +2,9 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import AdminSidebar from "../components/AdminSidebar";
+import Footer from "../components/Footer";
 
 export default function AdminLayout() {
-  console.log("Rendering AdminLayout");
   return (
     <div className="min-h-screen bg-[#f2f3f7] flex flex-row">
       <AdminSidebar />
@@ -13,6 +13,7 @@ export default function AdminLayout() {
         <main className="flex-1 p-6">
           <Outlet />
         </main>
+        <Footer />
       </div>
     </div>
   );
