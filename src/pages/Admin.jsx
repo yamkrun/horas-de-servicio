@@ -24,8 +24,8 @@ export default function Admin() {
   // Obtener la sección de los parámetros de la URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const section = params.get('section');
-    
+    const section = params.get("section");
+
     if (section) {
       setActiveSection(section);
     } else {
@@ -36,59 +36,59 @@ export default function Admin() {
   const handleAddStudent = () => {
     navigate("/register");
   };
-  
+
   useEffect(() => {
     console.log("Admin component mounted, fetching data...");
     const fetchData = async () => {
       try {
         console.log("Making API requests...");
-        
+
         // Create an array of promises with error handling for each request
         const requests = [
-          api.get("/users?r=1").catch(e => {
+          api.get("/users?r=1").catch((e) => {
             console.error("Error fetching admins:", e);
             return { data: [] };
           }),
-          api.get("/users?r=2").catch(e => {
+          api.get("/users?r=2").catch((e) => {
             console.error("Error fetching controllers:", e);
             return { data: [] };
           }),
-          api.get("/users?r=3").catch(e => {
+          api.get("/users?r=3").catch((e) => {
             console.error("Error fetching recruiters:", e);
             return { data: [] };
           }),
-          api.get("/students").catch(e => {
+          api.get("/students").catch((e) => {
             console.error("Error fetching students:", e);
             return { data: [] };
           }),
-          api.get("/services").catch(e => {
+          api.get("/services").catch((e) => {
             console.error("Error fetching services:", e);
             return { data: [] };
           }),
-          api.get("/schools").catch(e => {
+          api.get("/schools").catch((e) => {
             console.error("Error fetching schools:", e);
             return { data: [] };
           }),
-          api.get("/countries").catch(e => {
+          api.get("/countries").catch((e) => {
             console.error("Error fetching countries:", e);
             return { data: [] };
           }),
-          api.get("/categories").catch(e => {
+          api.get("/categories").catch((e) => {
             console.error("Error fetching categories:", e);
             return { data: [] };
-          })
+          }),
         ];
 
         // Wait for all requests to complete
         const [
-          adminRes, 
-          controllersRes, 
-          recruiterRes, 
+          adminRes,
+          controllersRes,
+          recruiterRes,
           studentsRes,
           servicesRes,
           schoolsRes,
           countriesRes,
-          categoriesRes
+          categoriesRes,
         ] = await Promise.all(requests);
 
         console.log("Data received:", {
@@ -99,18 +99,22 @@ export default function Admin() {
           services: servicesRes.data?.length || 0,
           schools: schoolsRes.data?.length || 0,
           countries: countriesRes.data?.length || 0,
-          categories: categoriesRes.data?.length || 0
+          categories: categoriesRes.data?.length || 0,
         });
 
         // Safely set state values with fallbacks to empty arrays
         setAdmin(Array.isArray(adminRes.data) ? adminRes.data : []);
-        setControllers(Array.isArray(controllersRes.data) ? controllersRes.data : []);
+        setControllers(
+          Array.isArray(controllersRes.data) ? controllersRes.data : []
+        );
         setRecruiter(Array.isArray(recruiterRes.data) ? recruiterRes.data : []);
         setStudents(Array.isArray(studentsRes.data) ? studentsRes.data : []);
         setServices(Array.isArray(servicesRes.data) ? servicesRes.data : []);
         setSchools(Array.isArray(schoolsRes.data) ? schoolsRes.data : []);
         setCountry(Array.isArray(countriesRes.data) ? countriesRes.data : []);
-        setCategories(Array.isArray(categoriesRes.data) ? categoriesRes.data : []);
+        setCategories(
+          Array.isArray(categoriesRes.data) ? categoriesRes.data : []
+        );
       } catch (error) {
         console.error("Error cargando datos:", error);
         // Initialize with empty arrays on error
@@ -131,10 +135,11 @@ export default function Admin() {
   // Función para filtrar datos según el término de búsqueda
   const filterData = (data, term) => {
     if (!term) return data;
-    return data.filter(item =>
-      item.f_name?.toLowerCase().includes(term.toLowerCase()) ||
-      item.f_lastname?.toLowerCase().includes(term.toLowerCase()) ||
-      item.email?.toLowerCase().includes(term.toLowerCase())
+    return data.filter(
+      (item) =>
+        item.f_name?.toLowerCase().includes(term.toLowerCase()) ||
+        item.f_lastname?.toLowerCase().includes(term.toLowerCase()) ||
+        item.email?.toLowerCase().includes(term.toLowerCase())
     );
   };
 
@@ -153,16 +158,21 @@ export default function Admin() {
       </div>
 
       {/* Barra de búsqueda - visible en todas las secciones excepto dashboard y categories */}
-      {(activeSection !== "dashboard" && activeSection !== "categories") && (
+      {activeSection !== "dashboard" && activeSection !== "categories" && (
         <div className="mb-6">
           <div className="flex border bg-white border-gray-300 rounded-lg items-center gap-4 w-full max-w-2xl">
             <input
               type="text"
               placeholder={`Buscar ${
-                activeSection === "admin" ? "administrador" :
-                activeSection === "controllers" ? "controlador" :
-                activeSection === "recruiters" ? "reclutador" :
-                activeSection === "students" ? "estudiante" : "usuario"
+                activeSection === "admin"
+                  ? "administrador"
+                  : activeSection === "controllers"
+                  ? "controlador"
+                  : activeSection === "recruiters"
+                  ? "reclutador"
+                  : activeSection === "students"
+                  ? "estudiante"
+                  : "usuario"
               }...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -174,28 +184,30 @@ export default function Admin() {
           </div>
         </div>
       )}
-      
+
       {/* Contenido según la sección activa */}
       {activeSection === "dashboard" && (
-        <div className="p-4 bg-white rounded-lg shadow">
+        <div>
           {/* Wait for all data to be loaded before rendering Dashboard */}
           {students && services && schools && country && categories ? (
-            <Dashboard 
+            <Dashboard
               services={services || []}
               students={students || []}
               schools={schools || []}
-              countries={country || []}
+              country={country || []}
               categories={categories || []}
             />
           ) : (
             <div className="bg-white p-6 rounded-lg shadow text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Cargando datos del dashboard...</p>
+              <p className="mt-4 text-gray-600">
+                Cargando datos del dashboard...
+              </p>
             </div>
           )}
         </div>
       )}
-      
+
       {/* Sección de Administradores */}
       {activeSection === "admin" && (
         <div className="bg-white rounded-lg shadow p-6">
@@ -204,10 +216,13 @@ export default function Admin() {
               <FiChevronDown /> Administradores
             </h2>
           </div>
-          <TableUsers data={filterData(admin, searchTerm)} filterRole={"Admin"} />
+          <TableUsers
+            data={filterData(admin, searchTerm)}
+            filterRole={"Admin"}
+          />
         </div>
       )}
-      
+
       {/* Sección de Controladores */}
       {activeSection === "controllers" && (
         <div className="bg-white rounded-lg shadow p-6">
@@ -216,10 +231,13 @@ export default function Admin() {
               <FiChevronDown /> Controladores
             </h2>
           </div>
-          <TableUsers data={filterData(controllers, searchTerm)} filterRole={"Controller"} />
+          <TableUsers
+            data={filterData(controllers, searchTerm)}
+            filterRole={"Controller"}
+          />
         </div>
       )}
-      
+
       {/* Sección de Reclutadores */}
       {activeSection === "recruiters" && (
         <div className="bg-white rounded-lg shadow p-6">
@@ -228,10 +246,13 @@ export default function Admin() {
               <FiChevronDown /> Reclutadores
             </h2>
           </div>
-          <TableUsers data={filterData(recruiter, searchTerm)} filterRole={"Recruiter"} />
+          <TableUsers
+            data={filterData(recruiter, searchTerm)}
+            filterRole={"Recruiter"}
+          />
         </div>
       )}
-      
+
       {/* Sección de Estudiantes */}
       {activeSection === "students" && (
         <div className="bg-white rounded-lg shadow p-6">
@@ -249,7 +270,7 @@ export default function Admin() {
           <StudentsTable data={filterData(students, searchTerm)} />
         </div>
       )}
-      
+
       {/* Sección de Categorías */}
       {activeSection === "categories" && (
         <div className="bg-white rounded-lg shadow p-6">
@@ -257,18 +278,21 @@ export default function Admin() {
             <h2 className="text-xl font-bold flex items-center gap-2">
               <FiChevronDown /> Categorías de Servicio
             </h2>
-            <button
-              className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-            >
+            <button className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
               <FiPlus /> Nueva Categoría
             </button>
           </div>
-          
+
           {categories && categories.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categories.map(category => (
-                <div key={category.id} className="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
-                  <h3 className="font-semibold text-lg mb-2">{category.name}</h3>
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  className="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200"
+                >
+                  <h3 className="font-semibold text-lg mb-2">
+                    {category.name}
+                  </h3>
                   <p className="text-gray-600 text-sm">
                     {category.description || "Sin descripción"}
                   </p>
@@ -276,7 +300,9 @@ export default function Admin() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-500 py-4">No hay categorías disponibles</p>
+            <p className="text-center text-gray-500 py-4">
+              No hay categorías disponibles
+            </p>
           )}
         </div>
       )}
