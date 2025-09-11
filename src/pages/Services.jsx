@@ -36,7 +36,7 @@ export default function Services() {
   const handleServiceUpdate = (updatedService) => {
     setServicios((prevServicios) =>
       prevServicios.map((serv) =>
-        serv.id === updatedService.id ? updatedService : serv
+        String(serv.id) === String(updatedService.id) ? updatedService : serv
       )
     );
   };
@@ -132,13 +132,19 @@ export default function Services() {
                         servicio.status === "Approved"
                           ? "bg-green-300 text-black"
                           : servicio.status === "Pending"
-                          ? "bg-yellow-300 text-black"
-                          : servicio.status === "Rejected"
-                          ? "bg-red-400 text-black"
-                          : "bg-gray-300 text-black"
+                            ? "bg-yellow-300 text-black"
+                            : servicio.status === "Rejected"
+                              ? "bg-red-400 text-black"
+                              : "bg-gray-300 text-black"
                       }`}
                     >
-                      {servicio.status}
+                      {servicio.status === "Approved"
+                        ? "Aprobado"
+                        : servicio.status === "Pending"
+                          ? "Pendiente"
+                          : servicio.status === "Rejected"
+                            ? "Rechazado"
+                            : "Desconocido"}
                     </span>
                   </td>
                   <td className="border border-gray-300 px-4 py-3 text-black">

@@ -8,12 +8,23 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
   const [amountApproved, setAmountApproved] = useState(
     servicio.amount_approved ?? 0
   );
+  const statusMap = {
+    Pending: "0",
+    Approved: "1",
+    Rejected: "2",
+  };
+
+  const reverseStatusMap = {
+    0: "Pending",
+    1: "Approved",
+    2: "Rejected",
+  };
   if (!servicio) return null;
 
   const handleSave = async () => {
     try {
       const res = await api.patch(`/review/${servicio.id}`, {
-        status,
+        status: statusMap[status],
         comment,
         amount_approved: amountApproved,
       });
@@ -21,12 +32,13 @@ export default function ModalServices({ servicio, onClose, onUpdate }) {
       if (res.status >= 200 && res.status < 300) {
         const updatedService = {
           ...servicio,
-          status,
-          comment,
-          amount_approved: amountApproved,
+          ...res.data,
+          status: reverseStatusMap[res.data.status] || status,
         };
 
-        if (onUpdate) onUpdate(updatedService);
+        if (onUpdate) {
+          onUpdate(updatedService);
+        }
 
         onClose();
       } else {

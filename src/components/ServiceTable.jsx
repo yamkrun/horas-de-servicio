@@ -4,7 +4,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import ModalServices from "./ModalServices";
 import { api } from "../libs/axios";
 
-export function ServiceTable({ servicios = [], mode = "student" }) {
+export function ServiceTable({ servicios = [], mode = "student", onUpdate }) {
   const [selectedService, setSelectedService] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +21,11 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
 
   const handleUpdateService = async (updatedService) => {
     try {
-      await api.put(`/services/${updatedService.id}`, updatedService);
+      const res = await api.put(
+        `/services/${updatedService.id}`,
+        updatedService
+      );
+      if (onUpdate) onUpdate(res.data);
     } catch (err) {
       console.error("Error al actualizar servicio:", err);
       setError("No se pudo actualizar el servicio.");
@@ -97,7 +101,13 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
                             : "bg-gray-300 text-black"
                     }`}
                   >
-                    {servicio.status}
+                    {servicio.status === "Approved"
+                      ? "Aprobado"
+                      : servicio.status === "Pending"
+                        ? "Pendiente"
+                        : servicio.status === "Rejected"
+                          ? "Rechazado"
+                          : "Desconocido"}
                   </span>
                 </td>
                 <td className="border border-gray-300 px-4 py-3 text-black">
