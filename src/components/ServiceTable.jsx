@@ -7,7 +7,6 @@ import { api } from "../libs/axios";
 export function ServiceTable({ servicios = [], mode = "student" }) {
   const [selectedService, setSelectedService] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [servicesList, setServicesList] = useState(servicios || []);
   const [error, setError] = useState(null);
 
   const handleOpenModal = (servicio) => {
@@ -23,9 +22,6 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
   const handleUpdateService = async (updatedService) => {
     try {
       await api.put(`/services/${updatedService.id}`, updatedService);
-      setServicesList((prev) =>
-        prev.map((s) => (s.id === updatedService.id ? updatedService : s))
-      );
     } catch (err) {
       console.error("Error al actualizar servicio:", err);
       setError("No se pudo actualizar el servicio.");
@@ -63,7 +59,7 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
           </tr>
         </thead>
         <tbody>
-          {servicesList.length === 0 ? (
+          {servicios.length === 0 ? (
             <tr>
               <td
                 colSpan={7}
@@ -73,7 +69,7 @@ export function ServiceTable({ servicios = [], mode = "student" }) {
               </td>
             </tr>
           ) : (
-            servicesList.map((servicio) => (
+            servicios.map((servicio) => (
               <tr key={servicio.id} className="hover:bg-gray-200">
                 <td className="border border-gray-300 px-4 py-3 text-black">
                   {servicio.category?.name || "Sin categoría"}
