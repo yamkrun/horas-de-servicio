@@ -44,19 +44,6 @@ export default function Login() {
       console.log("Attempting login with:", email);
       const result = await login(email, password);
       console.log("Login result:", result);
-
-      if (result.success && result.user) {
-        console.log("Login successful, user role:", result.user.role?.name);
-
-        // Forzar redirección basada en el rol
-        if (result.user.role?.name === "Student") {
-          navigate("/student", { replace: true });
-        } else if (result.user.role?.name === "Admin") {
-          navigate("/admin", { replace: true });
-        }
-      } else {
-        throw new Error(result.error || "Error al iniciar sesión");
-      }
     } catch (error) {
       console.error("Login error:", error);
       if (error.response && error.response.status === 401) {
